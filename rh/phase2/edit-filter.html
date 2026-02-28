@@ -660,13 +660,13 @@
         <!-- Header -->
         <div class="header">
             <div class="header-left">
-                <a href="categories-list-phase2.html?tab=filters" class="back-arrow">
+                <a href="categories-list.html?tab=filters" class="back-arrow">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="#202223"><path d="M17 9H5.414l3.293-3.293a1 1 0 1 0-1.414-1.414l-5 5a1 1 0 0 0 0 1.414l5 5a1 1 0 0 0 1.414-1.414L5.414 11H17a1 1 0 1 0 0-2z"/></svg>
                 </a>
                 <h1 class="header-title" id="pageTitle">Add filter</h1>
             </div>
             <div class="header-actions">
-                <button class="btn" onclick="window.location.href='categories-list-phase2.html?tab=filters'">Discard</button>
+                <button class="btn" onclick="window.location.href='categories-list.html?tab=filters'">Discard</button>
                 <button class="btn btn-primary" onclick="saveFilter()">Save</button>
             </div>
         </div>
@@ -760,7 +760,7 @@
             if (dd && !dd.contains(e.target)) dd.classList.remove('open');
         });
 
-        // ── Sample data (mirrors categories-list-phase2.html) ──
+        // ── Sample data (mirrors categories-list.html) ──
         const filtersData = [
             { id: '1', name: 'Technique', description: 'Analytical technique used', values: ['HPLC', 'GC', 'LC-MS', 'IC', 'GPC'], resourceCount: 234, status: 'active', order: 0 },
             { id: '2', name: 'Column Type', description: '', values: ['C18', 'C8', 'HILIC', 'Phenyl', 'CN', 'Amino'], resourceCount: 189, status: 'active', order: 10 },
@@ -909,7 +909,7 @@
 
             isDirty = false;
             // Navigate back to filters tab
-            window.location.href = 'categories-list-phase2.html?tab=filters';
+            window.location.href = 'categories-list.html?tab=filters';
         }
 
         // ── Delete filter ──
@@ -917,7 +917,7 @@
             if (!editingFilterId) return;
             if (!confirm('Delete this filter? Resources using it will lose this filter assignment. This cannot be undone.')) return;
             console.log('Deleted filter:', editingFilterId);
-            window.location.href = 'categories-list-phase2.html?tab=filters';
+            window.location.href = 'categories-list.html?tab=filters';
         }
 
         // ── Unsaved changes tracking ──
@@ -930,7 +930,7 @@
 
         function discardChanges() {
             if (confirm('Discard all unsaved changes?')) {
-                window.location.href = 'categories-list-phase2.html?tab=filters';
+                window.location.href = 'categories-list.html?tab=filters';
             }
         }
 
