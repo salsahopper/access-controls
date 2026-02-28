@@ -29,109 +29,101 @@
             z-index: 9000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
-        .page-nav-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: rgba(255,255,255,0.4);
-            margin-right: 20px;
-            padding: 12px 0;
-            white-space: nowrap;
-            font-weight: 600;
-        }
-        .page-nav a {
-            padding: 12px 18px;
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.65);
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .page-nav a:hover {
-            color: white;
-            background: rgba(255,255,255,0.06);
-        }
-        .page-nav a.active {
-            color: white;
-            border-bottom-color: #6366f1;
-        }
-        .page-nav-dropdown {
+        .phase-nav-dropdown {
             position: relative;
         }
-        .page-nav-dropdown > button {
-            padding: 12px 18px;
+        .phase-nav-btn {
+            padding: 8px 14px;
             font-size: 13px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.65);
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
+            font-weight: 600;
+            color: white;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
             font-family: inherit;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            white-space: nowrap;
         }
-        .page-nav-dropdown > button:hover {
-            color: white;
-            background: rgba(255,255,255,0.06);
+        .phase-nav-btn:hover {
+            background: rgba(255,255,255,0.15);
         }
-        .page-nav-dropdown.active > button {
-            color: white;
-            border-bottom-color: #6366f1;
-        }
-        .page-nav-dropdown-chevron {
+        .phase-nav-chevron {
             font-size: 10px;
             opacity: 0.6;
         }
-        .page-nav-submenu {
+        .phase-nav-menu {
             display: none;
             position: absolute;
             top: 100%;
             left: 0;
             background: #16162a;
             border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0 0 8px 8px;
-            min-width: 200px;
+            border-radius: 8px;
+            margin-top: 4px;
+            min-width: 140px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            overflow: hidden;
             z-index: 9001;
+            overflow: hidden;
         }
-        .page-nav-dropdown:hover .page-nav-submenu,
-        .page-nav-submenu:hover {
+        .phase-nav-dropdown.open .phase-nav-menu {
             display: block;
         }
-        .page-nav-submenu a {
+        .phase-nav-menu a {
             display: block;
-            padding: 10px 18px;
+            padding: 10px 14px;
             font-size: 13px;
-            font-weight: 400;
             color: rgba(255,255,255,0.65);
             text-decoration: none;
-            border-bottom: none;
             transition: all 0.15s;
         }
-        .page-nav-submenu a:hover {
+        .phase-nav-menu a:hover {
             background: rgba(255,255,255,0.08);
             color: white;
         }
-        .page-nav-submenu a.active {
+        .phase-nav-menu a.active {
             color: white;
-            background: rgba(99, 102, 241, 0.15);
-            border-bottom: none;
+            font-weight: 600;
         }
-        .page-nav-submenu a.active::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: #6366f1;
-            border-radius: 50%;
-            margin-right: 8px;
+        .phase-changes-links {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-left: 16px;
+        }
+        .phase-changes-links a {
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .phase-changes-links a:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .phase-changes-links a.active {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .nav-polaris-link {
+            margin-left: auto;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .nav-polaris-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
         }
 
         /* ── Shopify-style Left Sidebar ── */
@@ -673,102 +665,29 @@
         .info-box-text a:hover {
             text-decoration: none;
         }
-
-        /* ── Phase Dropdown ── */
-        .phase-selector {
-            padding: 0 8px 8px;
-            margin-bottom: 4px;
-        }
-        .phase-dropdown {
-            position: relative;
-            width: 100%;
-        }
-        .phase-dropdown-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #202223;
-            background: #e8e8e8;
-            border: 1px solid #d4d4d4;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .phase-dropdown-btn:hover {
-            background: #e0e0e0;
-        }
-        .phase-dropdown-chevron {
-            font-size: 10px;
-            color: #6d7175;
-        }
-        .phase-dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #d4d4d4;
-            border-radius: 8px;
-            margin-top: 4px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-            z-index: 100;
-            overflow: hidden;
-        }
-        .phase-dropdown.open .phase-dropdown-menu {
-            display: block;
-        }
-        .phase-dropdown-menu a {
-            display: block;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #616161;
-            text-decoration: none;
-            transition: background 0.1s;
-        }
-        .phase-dropdown-menu a:hover {
-            background: #f6f6f7;
-            color: #202223;
-        }
-        .phase-dropdown-menu a.active {
-            font-weight: 600;
-            color: #202223;
-            background: #f0f0f0;
-        }
     </style>
 </head>
 <body>
     <!-- Page Navigation -->
     <nav class="page-nav">
-        <span class="page-nav-label">UX Screens</span>
-        <div class="page-nav-dropdown">
-            <button>Phase 1 Changes <span class="page-nav-dropdown-chevron">&#9662;</span></button>
-            <div class="page-nav-submenu">
-                <a href="categories-list.html">Categories List</a>
+        <div class="phase-nav-dropdown" id="phaseDropdown">
+            <button class="phase-nav-btn" onclick="document.getElementById('phaseDropdown').classList.toggle('open')">
+                Phase 1 <span class="phase-nav-chevron">&#9662;</span>
+            </button>
+            <div class="phase-nav-menu">
+                <a href="javascript:void(0)" class="active">Phase 1</a>
+                <a href="../phase2/settings-visibility.html">Phase 2</a>
             </div>
         </div>
-        <a href="../polaris-reference.html">Polaris Reference</a>
+        <div class="phase-changes-links">
+            <a href="categories-list.html">Categories List</a>
+        </div>
+        <a href="../polaris-reference.html" class="nav-polaris-link">Polaris Reference</a>
     </nav>
 
     <div class="app-layout">
         <!-- Left Sidebar -->
         <aside class="app-sidebar">
-            <div class="phase-selector">
-                <div class="phase-dropdown" id="phaseDropdown">
-                    <button class="phase-dropdown-btn" onclick="document.getElementById('phaseDropdown').classList.toggle('open')">
-                        Phase 1 <span class="phase-dropdown-chevron">&#9662;</span>
-                    </button>
-                    <div class="phase-dropdown-menu">
-                        <a href="javascript:void(0)" class="active">Phase 1</a>
-                        <a href="../phase2/settings-visibility.html">Phase 2</a>
-                    </div>
-                </div>
-            </div>
             <div class="sidebar-section-title">ResourceHub</div>
             <ul class="sidebar-nav">
                 <li><a href="#">Resources</a></li>
