@@ -29,6 +29,16 @@
             z-index: 9000;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
+        .page-nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.4);
+            margin-right: 20px;
+            padding: 12px 0;
+            white-space: nowrap;
+            font-weight: 600;
+        }
         .phase-nav-dropdown {
             position: relative;
         }
@@ -670,6 +680,7 @@
 <body>
     <!-- Page Navigation -->
     <nav class="page-nav">
+        <span class="page-nav-label">UX Screens</span>
         <div class="phase-nav-dropdown" id="phaseDropdown">
             <button class="phase-nav-btn" onclick="document.getElementById('phaseDropdown').classList.toggle('open')">
                 Phase 1 <span class="phase-nav-chevron">&#9662;</span>
