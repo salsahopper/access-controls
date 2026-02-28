@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>★★★ Settings - ResourceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f1f1f1;
+            color: #202223;
+        }
+
+        /* ── Page Navigation Bar ── */
+        .page-nav {
+            background: #1a1a2e;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .page-nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.4);
+            margin-right: 20px;
+            padding: 12px 0;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .page-nav a {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .page-nav a:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav a.active {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown {
+            position: relative;
+        }
+        .page-nav-dropdown > button {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .page-nav-dropdown > button:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav-dropdown.active > button {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown-chevron {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        .page-nav-submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #16162a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0 0 8px 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            overflow: hidden;
+            z-index: 9001;
+        }
+        .page-nav-dropdown:hover .page-nav-submenu,
+        .page-nav-submenu:hover {
+            display: block;
+        }
+        .page-nav-submenu a {
+            display: block;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: none;
+            transition: all 0.15s;
+        }
+        .page-nav-submenu a:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+        }
+        .page-nav-submenu a.active {
+            color: white;
+            background: rgba(99, 102, 241, 0.15);
+            border-bottom: none;
+        }
+        .page-nav-submenu a.active::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #6366f1;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* ── Floating Test Mode Button + Panel ── */
+        .test-mode-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #856404;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 8000;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .test-mode-fab:hover {
+            background: #6d5103;
+            transform: scale(1.08);
+        }
+        .test-mode-fab svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .test-mode-fab .fab-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            background: #ffc107;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .test-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 340px;
+            background: white;
+            z-index: 9600;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+        }
+        .test-panel.open {
+            transform: translateX(0);
+        }
+        body.test-panel-open {
+            margin-right: 340px;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .test-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #fff3cd;
+            border-bottom: 1px solid #ffc107;
+        }
+        .test-panel-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #856404;
+            margin: 0;
+        }
+        .test-panel-header p {
+            font-size: 11px;
+            color: #856404;
+            margin: 2px 0 0 0;
+        }
+        .test-panel-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #856404;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .test-panel-close:hover {
+            background: rgba(133, 100, 4, 0.1);
+        }
+
+        .test-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .test-panel-section {
+            margin-bottom: 24px;
+        }
+        .test-panel-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6d7175;
+            margin-bottom: 10px;
+        }
+
+        .test-panel-field {
+            margin-bottom: 16px;
+        }
+        .test-panel-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #202223;
+            margin-bottom: 6px;
+        }
+
+        .test-panel-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+        .test-panel-toggle-row span {
+            font-size: 13px;
+            color: #202223;
+        }
+
+        .test-panel-note {
+            background: #f6f6f7;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        .test-panel-note-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #202223;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .test-panel-note-body {
+            display: none;
+            margin-top: 8px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #6d7175;
+        }
+        .test-panel-note.expanded .test-panel-note-body {
+            display: block;
+        }
+        .test-panel-note-chevron {
+            transition: transform 0.2s;
+            font-size: 10px;
+            color: #6d7175;
+        }
+        .test-panel-note.expanded .test-panel-note-chevron {
+            transform: rotate(90deg);
+        }
+
+        .toggle-label {
+            font-size: 13px;
+            color: #202223;
+            min-width: 60px;
+        }
+
+        .toggle-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #202223;
+            min-width: 100px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-track {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 26px;
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-track {
+            background-color: #303030;
+        }
+
+        .toggle-switch input:checked + .toggle-track .toggle-thumb {
+            left: 25px;
+        }
+
+        /* Main Card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e1e3e5;
+            padding: 0 20px;
+        }
+
+        .tab {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: #6d7175;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tab:hover {
+            color: #202223;
+        }
+
+        .tab.active {
+            color: #202223;
+            font-weight: 500;
+            border-bottom-color: #202223;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: #6d7175;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Visibility Options */
+        .visibility-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .visibility-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid #e1e3e5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .visibility-option:hover {
+            border-color: #c9cccf;
+            background: #fafbfb;
+        }
+
+        .visibility-option.selected {
+            border-color: #202223;
+            background: #f6f6f7;
+        }
+
+        .visibility-option.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .visibility-option.disabled:hover {
+            border-color: #e1e3e5;
+            background: white;
+        }
+
+        .visibility-option input[type="radio"] {
+            margin-top: 2px;
+            accent-color: #202223;
+            width: 18px;
+            height: 18px;
+        }
+
+        .visibility-option-content {
+            flex: 1;
+        }
+
+        .visibility-option-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .visibility-option-icon {
+            width: 20px;
+            height: 20px;
+            color: #6d7175;
+        }
+
+        .visibility-option-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .visibility-option-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202223;
+        }
+
+        .visibility-option-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            background: #006fbb;
+            color: white;
+        }
+
+        .visibility-option-desc {
+            font-size: 13px;
+            color: #6d7175;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .visibility-option-features {
+            padding-top: 12px;
+            border-top: 1px solid #e1e3e5;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 13px;
+            color: #202223;
+            margin-bottom: 8px;
+        }
+
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-item svg {
+            width: 16px;
+            height: 16px;
+            color: #008060;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Save Button */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #303030;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a1a1a;
+        }
+
+        .btn-primary:disabled {
+            background: #8c9196;
+            cursor: not-allowed;
+        }
+
+        /* Info Box */
+        .info-box {
+            display: flex;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(234, 244, 255, 1);
+            border: 1px solid rgba(145, 208, 255, 1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .info-box-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        .info-box-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: rgba(0, 91, 211, 1);
+        }
+
+        .info-box-text {
+            font-size: 13px;
+            color: rgba(0, 58, 135, 1);
+            line-height: 1.5;
+        }
+
+        .info-box-text a {
+            color: rgba(0, 58, 135, 1);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        .info-box-text a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Navigation -->
+    <nav class="page-nav">
+        <span class="page-nav-label">UX Screens</span>
+        <a href="settings-visibility.html" class="active">Settings</a>
+        <div class="page-nav-dropdown">
+            <button>Categories List <span class="page-nav-dropdown-chevron">&#9662;</span></button>
+            <div class="page-nav-submenu">
+                <a href="categories-list.html">Phase 1</a>
+                <a href="categories-list-phase2.html">Phase 2</a>
+            </div>
+        </div>
+        <a href="access-rules-ux.html">Edit Category</a>
+        <a href="polaris-reference.html">Polaris Reference</a>
+    </nav>
+
+    <div class="page-wrapper">
+        <h1 class="page-title">Settings</h1>
+
+        <!-- Floating Test Mode Button -->
+        <button class="test-mode-fab" onclick="toggleTestPanel()" title="Internal Testing Mode">
+            <svg viewBox="0 0 24 24">
+                <line x1="4" y1="6" x2="4" y2="20"/>
+                <line x1="12" y1="4" x2="12" y2="18"/>
+                <line x1="20" y1="8" x2="20" y2="22"/>
+                <circle cx="4" cy="10" r="2.5" fill="white" stroke="white" stroke-width="1"/>
+                <circle cx="4" cy="10" r="2.5" fill="none"/>
+                <circle cx="12" cy="8" r="2.5" fill="white" stroke="white" stroke-width="1"/>
+                <circle cx="12" cy="8" r="2.5" fill="none"/>
+                <circle cx="20" cy="14" r="2.5" fill="white" stroke="white" stroke-width="1"/>
+                <circle cx="20" cy="14" r="2.5" fill="none"/>
+            </svg>
+            <div class="fab-badge"></div>
+        </button>
+
+        <!-- Test Mode Side Panel -->
+        <div class="test-panel" id="testPanel">
+            <div class="test-panel-header">
+                <div>
+                    <h3>Internal Testing Mode</h3>
+                    <p>Toggle to test how settings appear for different plans</p>
+                </div>
+                <button class="test-panel-close" onclick="toggleTestPanel()">&times;</button>
+            </div>
+            <div class="test-panel-body">
+                <!-- Scenario Controls -->
+                <div class="test-panel-section">
+                    <div class="test-panel-section-label">Scenario Controls</div>
+
+                    <div class="test-panel-field">
+                        <label>Plan Type</label>
+                        <div class="test-panel-toggle-row">
+                            <span id="planLabel">Pro / Plus</span>
+                            <label style="position: relative; display: inline-block; width: 48px; height: 26px; cursor: pointer;">
+                                <input type="checkbox" id="planToggle" checked onchange="togglePlan()" style="opacity: 0; width: 0; height: 0;">
+                                <span id="planToggleBackground" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #005bd3; transition: .4s; border-radius: 26px;"></span>
+                                <span id="planToggleSlider" style="position: absolute; height: 20px; width: 20px; left: 25px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dev Notes -->
+                <div class="test-panel-section">
+                    <div class="test-panel-section-label">Dev Notes</div>
+
+                    <div class="test-panel-note" id="noteProPlus" onclick="this.classList.toggle('expanded')">
+                        <div class="test-panel-note-title">
+                            <span class="test-panel-note-chevron">&#9654;</span>
+                            Pro / Plus Plans
+                        </div>
+                        <div class="test-panel-note-body">
+                            <ol style="margin: 4px 0 0 16px; padding: 0;">
+                                <li>All 3 visibility options selectable</li>
+                                <li>Show usage counter when "Public with Visibility Controls" or "Private with Visibility Controls" selected</li>
+                                <li>AWS Presigned URLs enabled</li>
+                            </ol>
+                            <div style="margin-top: 8px; padding-top: 6px; border-top: 1px solid #e3e3e3; font-size: 10px;"><strong>Phase 1:</strong> Only $49/month plan gets visibility controls. (Plan tiers TBD)</div>
+                        </div>
+                    </div>
+
+                    <div class="test-panel-note" id="noteFreeBasic" onclick="this.classList.toggle('expanded')">
+                        <div class="test-panel-note-title">
+                            <span class="test-panel-note-chevron">&#9654;</span>
+                            Free / Basic Plans
+                        </div>
+                        <div class="test-panel-note-body">
+                            <ol style="margin: 4px 0 0 16px; padding: 0;">
+                                <li>Only "Public" is selectable</li>
+                                <li>"Public with Visibility Controls" and "Private with Visibility Controls" disabled + show "Upgrade" badge</li>
+                                <li>Hide usage counter</li>
+                                <li>AWS Presigned URLs disabled</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Open Questions -->
+                <div class="test-panel-section">
+                    <div class="test-panel-section-label">Notes & Questions</div>
+
+                    <div class="test-panel-note" onclick="this.classList.toggle('expanded')">
+                        <div class="test-panel-note-title">
+                            <span class="test-panel-note-chevron">&#9654;</span>
+                            Open Questions (TBD)
+                        </div>
+                        <div class="test-panel-note-body">
+                            <ol style="margin: 4px 0 0 16px; padding: 0;">
+                                <li><strong>Limit reached (50/50):</strong> Block save? Show error? Allow but warn?</li>
+                                <li><strong>Downgrade scenario:</strong> User downgrades from Pro/Plus to Free/Basic — what happens to restricted categories?</li>
+                                <li><strong>Default visibility for new categories:</strong> Default to "Inherit"?</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="card">
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab">Library Styles</div>
+                <div class="tab">Library Content</div>
+                <div class="tab">Icons</div>
+                <div class="tab">SEO</div>
+                <div class="tab">Settings</div>
+                <div class="tab active">Visibility</div>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <div class="section-title">Library Visibility</div>
+                <div class="section-desc">
+                    Choose who can see your library.
+                </div>
+
+                <!-- Info Box (shown for free plans) -->
+                <div class="info-box" id="upgradeInfo" style="display: none;">
+                    <div class="info-box-icon">
+                        <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm-.75-9.25a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-1.5 0v-4.5Zm.75-1.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+                    </div>
+                    <div class="info-box-text">
+                        Your library is open to everyone on your current plan. <a href="#">Upgrade</a> for visibility controls.
+                    </div>
+                </div>
+
+                <!-- Visibility Options -->
+                <div class="visibility-options">
+                    <!-- Public (Basic) Option -->
+                    <label class="visibility-option selected" id="publicOption" onclick="selectOption('public')">
+                        <input type="radio" name="visibility" value="public" checked>
+                        <div class="visibility-option-content">
+                            <div class="visibility-option-header">
+                                <span class="visibility-option-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                    </svg>
+                                </span>
+                                <span class="visibility-option-title">Public</span>
+                            </div>
+                            <div class="visibility-option-desc">
+                                Anyone can see your entire library. Great for SEO.
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Public with Visibility Controls Option -->
+                    <label class="visibility-option" id="publicControlsOption" onclick="selectOption('public-controls')">
+                        <input type="radio" name="visibility" value="public-controls" id="publicControlsRadio">
+                        <div class="visibility-option-content">
+                            <div class="visibility-option-header">
+                                <span class="visibility-option-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                    </svg>
+                                </span>
+                                <span class="visibility-option-title">Public with Visibility Controls</span>
+                                <span class="visibility-option-badge" id="publicControlsBadge" style="display: none;">Upgrade</span>
+                            </div>
+                            <div class="visibility-option-desc">
+                                Anyone can browse. Restrict specific categories to logged-in customers.
+                            </div>
+                            <div class="visibility-option-features" id="publicControlsFeatures">
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Require login for specific categories (Logged-in only)</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Restrict categories to customers with specific tags</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Restrict categories to B2B companies <span style="color: #6d7175;">(Shopify Plus)</span></span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Best for: Open library with some protected content, paid memberships</span>
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Private Option -->
+                    <label class="visibility-option" id="privateOption" onclick="selectOption('private')">
+                        <input type="radio" name="visibility" value="private" id="privateRadio">
+                        <div class="visibility-option-content">
+                            <div class="visibility-option-header">
+                                <span class="visibility-option-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span>
+                                <span class="visibility-option-title">Private with Visibility Controls</span>
+                                <span class="visibility-option-badge" id="privateBadge" style="display: none;">Upgrade</span>
+                            </div>
+                            <div class="visibility-option-desc">
+                                Only logged-in customers can see your library.
+                            </div>
+                            <div class="visibility-option-features" id="privateFeatures">
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Nothing visible until customer logs in</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Restrict categories to customers with specific tags</span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Restrict categories to B2B companies <span style="color: #6d7175;">(Shopify Plus)</span></span>
+                                </div>
+                                <div class="feature-item">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Best for: Private library, members-only access</span>
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <button class="btn btn-primary" id="saveBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isPaidPlan = true;
+        let currentSelection = 'public-controls'; // Default for paid
+
+        // Test panel toggle
+        function toggleTestPanel() {
+            document.getElementById('testPanel').classList.toggle('open');
+            document.body.classList.toggle('test-panel-open');
+        }
+
+        function togglePlan() {
+            const toggle = document.getElementById('planToggle');
+            const label = document.getElementById('planLabel');
+            const slider = document.getElementById('planToggleSlider');
+            const background = document.getElementById('planToggleBackground');
+
+            isPaidPlan = toggle.checked;
+            label.textContent = isPaidPlan ? 'Pro / Plus' : 'Free / Basic';
+
+            // Update toggle visual
+            if (isPaidPlan) {
+                slider.style.left = '25px';
+                background.style.backgroundColor = '#005bd3';
+            } else {
+                slider.style.left = '3px';
+                background.style.backgroundColor = '#ccc';
+            }
+
+            updateUI();
+        }
+
+        function selectOption(option) {
+            // Free plan can only select public
+            if (!isPaidPlan && (option === 'public-controls' || option === 'private')) {
+                return;
+            }
+            
+            currentSelection = option;
+            
+            // Update radio buttons
+            document.querySelector('input[value="public"]').checked = (option === 'public');
+            document.querySelector('input[value="public-controls"]').checked = (option === 'public-controls');
+            document.querySelector('input[value="private"]').checked = (option === 'private');
+            
+            // Update selected styles
+            document.getElementById('publicOption').classList.toggle('selected', option === 'public');
+            document.getElementById('publicControlsOption').classList.toggle('selected', option === 'public-controls');
+            document.getElementById('privateOption').classList.toggle('selected', option === 'private');
+            
+        }
+
+        function updateUI() {
+            const publicOption = document.getElementById('publicOption');
+            const publicControlsOption = document.getElementById('publicControlsOption');
+            const privateOption = document.getElementById('privateOption');
+            const publicControlsRadio = document.getElementById('publicControlsRadio');
+            const privateRadio = document.getElementById('privateRadio');
+            const publicControlsBadge = document.getElementById('publicControlsBadge');
+            const privateBadge = document.getElementById('privateBadge');
+            const upgradeInfo = document.getElementById('upgradeInfo');
+            const saveBtn = document.getElementById('saveBtn');
+            
+            // Features always visible - so free users see the value!
+            document.getElementById('publicControlsFeatures').style.display = 'block';
+            document.getElementById('privateFeatures').style.display = 'block';
+            
+            if (isPaidPlan) {
+                // Paid plan - full access to all 3 options
+                publicOption.classList.remove('disabled');
+                publicControlsOption.classList.remove('disabled');
+                privateOption.classList.remove('disabled');
+                publicControlsRadio.disabled = false;
+                privateRadio.disabled = false;
+                publicControlsBadge.style.display = 'none';
+                privateBadge.style.display = 'none';
+                upgradeInfo.style.display = 'none';
+                saveBtn.disabled = false;
+                
+            } else {
+                // Free plan - Public only, but show all features so they see value
+                publicOption.classList.remove('disabled');
+                publicControlsOption.classList.add('disabled');
+                privateOption.classList.add('disabled');
+                publicControlsRadio.disabled = true;
+                privateRadio.disabled = true;
+                publicControlsBadge.style.display = 'inline';
+                privateBadge.style.display = 'inline';
+                upgradeInfo.style.display = 'flex';
+                saveBtn.disabled = true;
+                
+                // Reset to public if on a paid option
+                if (currentSelection !== 'public') {
+                    selectOption('public');
+                }
+            }
+        }
+
+        // Initialize
+        updateUI();
+        selectOption(isPaidPlan ? 'public-controls' : 'public');
+    </script>
+</body>
+</html>

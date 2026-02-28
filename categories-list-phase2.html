@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>★★★ Categories - ResourceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f1f1f1;
+            color: #202223;
+        }
+
+        /* ── Page Navigation Bar ── */
+        .page-nav {
+            background: #1a1a2e;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .page-nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.4);
+            margin-right: 20px;
+            padding: 12px 0;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .page-nav a {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .page-nav a:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav a.active {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown {
+            position: relative;
+        }
+        .page-nav-dropdown > button {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .page-nav-dropdown > button:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav-dropdown.active > button {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown-chevron {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        .page-nav-submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #16162a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0 0 8px 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            overflow: hidden;
+            z-index: 9001;
+        }
+        .page-nav-dropdown:hover .page-nav-submenu,
+        .page-nav-submenu:hover {
+            display: block;
+        }
+        .page-nav-submenu a {
+            display: block;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: none;
+            transition: all 0.15s;
+        }
+        .page-nav-submenu a:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+        }
+        .page-nav-submenu a.active {
+            color: white;
+            background: rgba(99, 102, 241, 0.15);
+            border-bottom: none;
+        }
+        .page-nav-submenu a.active::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #6366f1;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .app-header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e1e3e5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-icon {
+            width: 28px;
+            height: 28px;
+            background: #d82c0d;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+            fill: none;
+        }
+
+        .app-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #202223;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #202223;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid #c9cccf;
+            color: #202223;
+        }
+
+        .btn-secondary:hover {
+            background: #f6f6f7;
+        }
+
+        .btn-primary {
+            background: #303030;
+            border: 1px solid #303030;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a1a1a;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* Library visibility indicator (in tab bar) */
+        .library-visibility {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: auto;
+            font-size: 13px;
+            color: #6d7175;
+            position: relative;
+        }
+
+        .library-visibility svg.globe-icon {
+            width: 16px;
+            height: 16px;
+            stroke: #6d7175;
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        .library-visibility strong {
+            color: #202223;
+            font-weight: 600;
+        }
+
+        .library-visibility .vis-info {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #8c9196;
+            position: relative;
+        }
+
+        .library-visibility .vis-info svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .library-visibility .vis-info-tooltip {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 24px;
+            width: 300px;
+            background: #303030;
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.5;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .library-visibility .vis-info-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 4px;
+            width: 10px;
+            height: 10px;
+            background: #303030;
+            transform: rotate(45deg);
+        }
+
+        .library-visibility .vis-info:hover .vis-info-tooltip {
+            display: block;
+        }
+
+        .library-visibility .vis-info-tooltip a {
+            color: #91d0ff;
+            text-decoration: underline;
+        }
+
+        /* Tabs */
+        .tabs-wrapper {
+            padding: 24px 24px 0 24px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e1e3e5;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6d7175;
+            text-decoration: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .tab:hover {
+            color: #202223;
+            background: #f6f6f7;
+        }
+
+        .tab.active {
+            color: #202223;
+            background: #e4e5e7;
+        }
+
+        /* Tab content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-description {
+            padding: 24px 24px 20px 24px;
+            font-size: 14px;
+            color: #6d7175;
+            line-height: 1.5;
+        }
+
+        .tab-description strong {
+            color: #202223;
+        }
+
+        /* Tips tab styling */
+        .tips-container {
+            padding: 24px;
+        }
+
+        .tips-section {
+            margin-bottom: 32px;
+        }
+
+        .tips-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .tips-heading {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 12px;
+        }
+
+        .tips-intro {
+            font-size: 14px;
+            color: #6d7175;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .tip-card {
+            background: #ffffff;
+            border: 1px solid #e3e3e3;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0px 1px 0px 0px rgba(26,26,26,0.07);
+        }
+
+        .tip-icon {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f7f7f7;
+        }
+
+        .tip-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #616161;
+        }
+
+        .tip-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #303030;
+            margin-bottom: 8px;
+        }
+
+        .tip-card p {
+            font-size: 13px;
+            color: #616161;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .tip-example {
+            font-size: 12px;
+            color: #616161;
+            padding: 0;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .tip-example strong {
+            color: #303030;
+        }
+
+        .tip-best-practice {
+            font-size: 12px;
+            color: #616161;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        /* Industry CTA */
+        .industry-cta {
+            background: #f6f6f7;
+            border: 1px solid #e1e3e5;
+            border-radius: 8px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .industry-cta-text h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #202223;
+            margin: 0 0 4px 0;
+        }
+
+        .industry-cta-text p {
+            font-size: 13px;
+            color: #6d7175;
+            margin: 0;
+        }
+
+        .industry-select {
+            padding: 10px 16px;
+            border: 1px solid #c9cccf;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #202223;
+            background: white;
+            cursor: pointer;
+            min-width: 220px;
+        }
+
+        .industry-select:focus {
+            outline: none;
+            border-color: #202223;
+        }
+
+        .feedback-request {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #e1e3e5;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #6d7175;
+        }
+
+        .feedback-request p {
+            margin: 0;
+        }
+
+        .feedback-request a {
+            color: #006fbb;
+            text-decoration: none;
+        }
+
+        .feedback-request a:hover {
+            text-decoration: underline;
+        }
+
+        .example-structure {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            background: #f9fafb;
+            border: 1px solid #e1e3e5;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .example-column h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 12px;
+        }
+
+        .example-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .example-list li {
+            padding: 4px 0;
+            color: #6d7175;
+        }
+
+        .example-list li.parent {
+            color: #202223;
+            font-weight: 500;
+        }
+
+        .example-list li.child {
+            padding-left: 16px;
+            color: #6d7175;
+        }
+
+        /* Table section */
+        .table-section {
+            padding: 0 24px 24px 24px;
+        }
+
+        /* Table */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #e1e3e5;
+            border-radius: 8px;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6d7175;
+            border-bottom: 1px solid #e1e3e5;
+            background: #fafbfb;
+        }
+
+        .table th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .table th.sortable:hover {
+            color: #202223;
+        }
+
+        .th-content {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sort-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .table th.sortable:hover .sort-icon {
+            opacity: 0.5;
+        }
+
+        .table th.sortable.sorted .sort-icon {
+            opacity: 1;
+        }
+
+        .sort-icon svg {
+            width: 10px;
+            height: 6px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .sort-icon .sort-asc,
+        .sort-icon .sort-desc {
+            opacity: 0.3;
+        }
+
+        .table th.sorted-asc .sort-icon .sort-asc,
+        .table th.sorted-desc .sort-icon .sort-desc {
+            opacity: 1;
+        }
+
+        .table th.th-center {
+            text-align: center;
+        }
+
+        .table th.th-order {
+            text-align: center;
+            width: 120px;
+        }
+
+        .table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #202223;
+            border-bottom: 1px solid #f1f1f1;
+            vertical-align: middle;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tbody tr {
+            cursor: pointer;
+        }
+
+        .table tbody tr:hover {
+            background: #fafbfb;
+        }
+
+        .table td.td-center {
+            text-align: center;
+        }
+
+        .table td.td-order {
+            text-align: center;
+        }
+
+        /* Prevent row click when clicking order */
+        .table td.td-order {
+            cursor: default;
+        }
+
+        /* Category name cell — tree style */
+        .category-name-cell {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .category-name {
+            font-weight: 500;
+            color: #202223;
+        }
+
+        .subcategory-indent {
+            display: inline-flex;
+            align-items: center;
+            padding-left: 16px;
+            color: #8c9196;
+        }
+
+        .subcategory-indent svg {
+            width: 14px;
+            height: 14px;
+            stroke: #8c9196;
+            fill: none;
+            margin-right: 4px;
+        }
+
+        .resource-count {
+            color: #8c9196;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        /* Restrictions column */
+        .td-restrictions {
+            color: #6d7175;
+            font-size: 13px;
+        }
+
+        .none-text {
+            color: #8c9196;
+        }
+
+        .more-link {
+            color: #6d7175;
+        }
+
+        /* Visibility cell */
+        .visibility-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .access-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .access-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: #6d7175;
+            fill: none;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-draft {
+            background: #e4e5e7;
+            color: #6d7175;
+        }
+
+
+        .status-active {
+            background: #c9fdd7;
+            color: #1a7f37;
+        }
+
+        /* Display order - click to edit */
+        .order-display {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-size: 14px;
+            transition: background 0.15s;
+        }
+
+        .order-display:hover {
+            background: #f1f1f1;
+        }
+
+        .order-display:hover .order-pencil {
+            opacity: 1;
+        }
+
+        .order-value {
+            color: #202223;
+        }
+
+        .order-pencil {
+            opacity: 0;
+            transition: opacity 0.15s;
+            display: flex;
+            align-items: center;
+        }
+
+        .order-pencil svg {
+            width: 14px;
+            height: 14px;
+            stroke: #6d7175;
+            fill: none;
+        }
+
+        .order-input {
+            width: 70px;
+            padding: 6px 8px;
+            border: 2px solid #006fbb;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+        }
+
+        .order-input-wrapper {
+            display: none;
+        }
+
+        .order-input-wrapper.editing {
+            display: block;
+        }
+
+        .order-display.hidden {
+            display: none;
+        }
+
+        /* Pagination - Simple arrows */
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 0;
+            gap: 12px;
+        }
+
+        .pagination-arrows {
+            display: flex;
+        }
+
+        .pagination-range {
+            font-size: 13px;
+            color: #6d7175;
+        }
+
+        .pagination-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #c9cccf;
+            background: white;
+            font-size: 16px;
+            cursor: pointer;
+            color: #6d7175;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination-arrows .pagination-btn:first-child {
+            border-radius: 6px 0 0 6px;
+            border-right: none;
+        }
+
+        .pagination-arrows .pagination-btn:last-child {
+            border-radius: 0 6px 6px 0;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: #f6f6f7;
+            color: #202223;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        /* Tags tab specific */
+        .tag-badge {
+            font-size: 13px;
+            font-weight: 500;
+            color: #202223;
+        }
+
+        .resource-count {
+            font-size: 13px;
+            color: #6d7175;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #6d7175;
+        }
+
+        .empty-state-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #202223;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-description {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* ── Filters tab ── */
+        /* ── Shared usage bar ── */
+        .usage-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px 16px 24px;
+        }
+        .usage-bar-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #616161;
+            white-space: nowrap;
+        }
+        .usage-bar-track {
+            flex: 1;
+            max-width: 160px;
+            height: 6px;
+            background: #e3e3e3;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .usage-bar-fill {
+            height: 100%;
+            background: #303030;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+        .usage-bar-info {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #8c9196;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .usage-bar-info svg {
+            width: 18px;
+            height: 18px;
+        }
+        .usage-bar-info:hover {
+            color: #202223;
+        }
+        .usage-bar-tooltip {
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 28px;
+            width: 320px;
+            background: #303030;
+            color: white;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-style: normal;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            z-index: 200;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        .usage-bar-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 6px;
+            background: #303030;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .usage-bar-info:hover .usage-bar-tooltip {
+            display: block;
+        }
+        .usage-bar-tooltip a {
+            color: #90caf9;
+            text-decoration: none;
+        }
+        .usage-bar-tooltip a:hover {
+            text-decoration: underline;
+        }
+
+        /* Legacy aliases for filters */
+        .filter-usage-bar { display: flex; align-items: center; gap: 16px; padding: 0 24px 16px 24px; }
+        .filter-usage-text { font-size: 13px; font-weight: 500; color: #616161; white-space: nowrap; }
+        .filter-usage-track { flex: 1; max-width: 160px; height: 6px; background: #e3e3e3; border-radius: 3px; overflow: hidden; }
+        .filter-usage-fill { height: 100%; background: #303030; border-radius: 3px; transition: width 0.3s; }
+        .filter-values-preview {
+            font-size: 13px;
+            color: #616161;
+        }
+        .filter-values-more {
+            color: #005bd3;
+            font-weight: 500;
+        }
+
+        /* Internal Testing Mode - Floating button + slide-out panel */
+        .test-mode-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #856404;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 8000;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .test-mode-fab:hover {
+            background: #6d5103;
+            transform: scale(1.08);
+        }
+        .test-mode-fab svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: white;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .test-mode-fab .fab-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 14px;
+            height: 14px;
+            background: #ffc107;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .test-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 340px;
+            background: white;
+            z-index: 9600;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+        }
+        .test-panel.open {
+            transform: translateX(0);
+        }
+        body.test-panel-open {
+            margin-right: 340px;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .test-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #fff3cd;
+            border-bottom: 1px solid #ffc107;
+        }
+        .test-panel-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #856404;
+            margin: 0;
+        }
+        .test-panel-header p {
+            font-size: 11px;
+            color: #856404;
+            margin: 2px 0 0 0;
+        }
+        .test-panel-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #856404;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .test-panel-close:hover {
+            background: rgba(133, 100, 4, 0.1);
+        }
+
+        .test-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .test-panel-section {
+            margin-bottom: 24px;
+        }
+        .test-panel-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6d7175;
+            margin-bottom: 10px;
+        }
+
+        .test-panel-field {
+            margin-bottom: 16px;
+        }
+        .test-panel-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #202223;
+            margin-bottom: 6px;
+        }
+        .test-panel-field select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #c9cccf;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            color: #202223;
+        }
+
+        .test-panel-note {
+            background: #f6f6f7;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        .test-panel-note-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #202223;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .test-panel-note-body {
+            display: none;
+            margin-top: 8px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #6d7175;
+        }
+        .test-panel-note.expanded .test-panel-note-body {
+            display: block;
+        }
+        .test-panel-note-chevron {
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+        .test-panel-note.expanded .test-panel-note-chevron {
+            transform: rotate(180deg);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Page Navigation -->
+    <nav class="page-nav">
+        <span class="page-nav-label">UX Screens</span>
+        <a href="settings-visibility.html">Settings</a>
+        <div class="page-nav-dropdown active">
+            <button>Categories List <span class="page-nav-dropdown-chevron">&#9662;</span></button>
+            <div class="page-nav-submenu">
+                <a href="categories-list.html">Phase 1</a>
+                <a href="categories-list-phase2.html" class="active">Phase 2</a>
+            </div>
+        </div>
+        <div class="page-nav-dropdown">
+            <button>Edit Pages <span class="page-nav-dropdown-chevron">&#9662;</span></button>
+            <div class="page-nav-submenu">
+                <a href="access-rules-ux.html">Edit Category</a>
+                <a href="edit-filter.html">Edit Filter</a>
+            </div>
+        </div>
+        <a href="polaris-reference.html">Polaris Reference</a>
+    </nav>
+
+    <!-- App Header -->
+    <div class="app-header">
+        <div class="app-icon">
+            <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+        </div>
+        <span class="app-name">ResourceHub</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title" id="pageTitle">Categories</h1>
+            <div class="header-actions">
+                <a href="#" class="btn btn-secondary">View Resource Library</a>
+                <button class="btn btn-primary" id="addBtn" onclick="handleAddClick()">Add category</button>
+            </div>
+        </div>
+
+        <!-- Main Card with Tabs -->
+        <div class="card">
+            <!-- Tabs -->
+            <div class="tabs-wrapper">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('categories')">Categories</button>
+                    <button class="tab" onclick="switchTab('tags')">Tags</button>
+                    <button class="tab" onclick="switchTab('filters')">Filters</button>
+                    <button class="tab" onclick="switchTab('tips')">Tips</button>
+
+                    <div class="library-visibility" id="libraryVisibility">
+                        <svg class="globe-icon" viewBox="0 0 24 24" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        <span>Your Library is Set to</span>
+                        <strong>Public</strong>
+                        <span class="vis-info">
+                            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 14a.75.75 0 0 1-.75-.75v-3.5a.75.75 0 0 1 1.5 0v3.5a.75.75 0 0 1-.75.75Z"/><path d="M9 7a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/><path fill-rule="evenodd" d="M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Zm-1.5 0a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Z"/></svg>
+                            <div class="vis-info-tooltip">Anyone can browse unless a category requires login. <a href="settings-visibility.html">Change settings</a></div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Categories -->
+            <div class="tab-content active" id="tab-categories">
+                <div class="tab-description">
+                    Categories organize your library navigation. Parent categories become the main tabs at the top of your library. Sub-categories appear as filters in the sidebar.
+                </div>
+
+                <div class="usage-bar">
+                    <span class="usage-bar-text">3 of 50 protected categories used</span>
+                    <span class="usage-bar-info">
+                        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 14a.75.75 0 0 1-.75-.75v-3.5a.75.75 0 0 1 1.5 0v3.5a.75.75 0 0 1-.75.75Z"/><path d="M9 7a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"/><path fill-rule="evenodd" d="M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Zm-1.5 0a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0Z"/></svg>
+                        <div class="usage-bar-tooltip">Categories set to "Logged-in only" or "Restricted" count toward this limit. "Public" and "Inherit" don't count. <a href="#">Need more? View upgrade options</a></div>
+                    </span>
+                    <div class="usage-bar-track">
+                        <div class="usage-bar-fill" style="width: 6%;"></div>
+                    </div>
+                </div>
+
+                <div class="table-section">
+                    <table class="table" id="categoriesTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable sorted sorted-asc" onclick="sortCategories('name')">
+                                    <div class="th-content">
+                                        Name
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6"><path d="M1 5l4-4 4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="sortable" onclick="sortCategories('visibility')">
+                                    <div class="th-content">
+                                        Visibility
+                                        <!-- J Note -->
+                                        <span style="position: relative;" onclick="event.stopPropagation();">
+                                            <button onclick="event.stopPropagation(); document.getElementById('jpNoteVisibility').style.display = document.getElementById('jpNoteVisibility').style.display === 'none' ? 'block' : 'none'" style="background: #0284c7; border: none; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: bold; vertical-align: middle; margin-left: 4px;">J</button>
+                                            <div id="jpNoteVisibility" style="display: none; position: absolute; left: 0; top: 20px; width: 380px; background: #0c4a6e; color: white; padding: 12px; border-radius: 6px; font-size: 11px; line-height: 1.6; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                                                <strong>🔧 J — Visibility column:</strong>
+                                                <ol style="margin: 8px 0 0 16px; padding: 0;">
+                                                    <li>Options: Public, Logged-in only, Restricted, Inherit</li>
+                                                    <li><strong>Public:</strong> 🌐 Globe icon</li>
+                                                    <li><strong>Logged-in only:</strong> 🔒 Lock icon</li>
+                                                    <li><strong>Restricted:</strong> 🔒 Lock icon</li>
+                                                    <li><strong>Inherit:</strong> Icon matches PARENT's effective visibility (Globe if parent is Public, Lock if parent is Logged-in/Restricted)</li>
+                                                </ol>
+                                                <div style="margin-top: 6px; font-size: 10px; opacity: 0.8;">Click to close</div>
+                                            </div>
+                                        </span>
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6"><path d="M1 5l4-4 4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th>Customer Restrictions <!-- J Note -->
+                                    <span style="position: relative;">
+                                        <button onclick="event.stopPropagation(); document.getElementById('jpNoteRestrictions').style.display = document.getElementById('jpNoteRestrictions').style.display === 'none' ? 'block' : 'none'" style="background: #0284c7; border: none; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: bold; vertical-align: middle; margin-left: 4px;">J</button>
+                                        <div id="jpNoteRestrictions" style="display: none; position: absolute; right: 0; top: 20px; width: 400px; background: #0c4a6e; color: white; padding: 12px; border-radius: 6px; font-size: 11px; line-height: 1.6; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                                            <strong>🔧 J — Customer Restrictions column:</strong>
+                                            <p style="margin: 8px 0 6px 0;">Shows WHICH customers can access (tags or B2B companies):</p>
+                                            <ol style="margin: 0 0 0 16px; padding: 0;">
+                                                <li><strong>Public:</strong> "None"</li>
+                                                <li><strong>Logged-in only:</strong> "None"</li>
+                                                <li><strong>Restricted:</strong> Show tags/companies</li>
+                                                <li><strong>Inherit:</strong> Look up parent's restrictions and display them here</li>
+                                                <li><strong>Order:</strong> Tags first, then " · " separator, then B2B companies (e.g., "VIP, Gold · Acme Corp")</li>
+                                                <li><strong>Truncate:</strong> You decide how many to show (3? 5? 10?) based on Gadget costs, then "+N more"</li>
+                                                <li>"+N more" is just text — no tooltip/popup needed</li>
+                                            </ol>
+                                            <div style="margin-top: 6px; font-size: 10px; opacity: 0.8;">Click to close</div>
+                                        </div>
+                                    </span>
+                                </th>
+                                <th class="th-center sortable" onclick="sortCategories('status')">
+                                    <div class="th-content" style="justify-content: center;">
+                                        Status
+                                        <!-- J Note -->
+                                        <span style="position: relative;" onclick="event.stopPropagation();">
+                                            <button onclick="event.stopPropagation(); document.getElementById('jpNoteStatus').style.display = document.getElementById('jpNoteStatus').style.display === 'none' ? 'block' : 'none'" style="background: #0284c7; border: none; border-radius: 50%; width: 16px; height: 16px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: bold; vertical-align: middle; margin-left: 4px;">J</button>
+                                            <div id="jpNoteStatus" style="display: none; position: absolute; right: 0; top: 20px; width: 280px; background: #0c4a6e; color: white; padding: 12px; border-radius: 6px; font-size: 11px; line-height: 1.6; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                                                <strong>🔧 J — Status column:</strong>
+                                                <p style="margin: 8px 0 0 0;">Phase 2 feature. Build now if you think it's best.</p>
+                                                <div style="margin-top: 6px; font-size: 10px; opacity: 0.8;">Click to close</div>
+                                            </div>
+                                        </span>
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6"><path d="M1 5l4-4 4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="th-order sortable" onclick="sortCategories('order')">
+                                    <div class="th-content" style="justify-content: center;">
+                                        Display Order
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6"><path d="M1 5l4-4 4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="catTableBody">
+                        </tbody>
+                    </table>
+
+                    <div class="pagination-wrapper">
+                        <div class="pagination-arrows">
+                            <button class="pagination-btn" id="catPrevBtn" onclick="catPrevPage()">
+                                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                            </button>
+                            <button class="pagination-btn" id="catNextBtn" onclick="catNextPage()">
+                                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                            </button>
+                        </div>
+                        <span class="pagination-range" id="catRange">1-10 of 15</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Tags -->
+            <div class="tab-content" id="tab-tags">
+                <div class="tab-description">
+                    Tags are extra labels you can add to any resource — like brands, product lines, or compliance standards. Unlike categories, a resource can have many tags.
+                </div>
+
+                <div class="table-section">
+                    <table class="table" id="tagsTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable sorted sorted-asc" onclick="sortTags('name')">
+                                    <div class="th-content">
+                                        Tag
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6"><path d="M1 5l4-4 4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="th-center sortable" onclick="sortTags('resourceCount')">
+                                    <div class="th-content" style="justify-content: center;">
+                                        Resources
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6"><path d="M1 5l4-4 4 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="tagTableBody">
+                        </tbody>
+                    </table>
+
+                    <div class="pagination-wrapper">
+                        <div class="pagination-arrows">
+                            <button class="pagination-btn" id="tagPrevBtn" onclick="tagPrevPage()">
+                                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                            </button>
+                            <button class="pagination-btn" id="tagNextBtn" onclick="tagNextPage()">
+                                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                            </button>
+                        </div>
+                        <span class="pagination-range" id="tagRange">1-8 of 8</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Filters -->
+            <div class="tab-content" id="tab-filters">
+                <div class="tab-description">
+                    Custom filters let customers narrow resources by attributes like technique, product type, or region. They appear as additional filter sections in your library sidebar.
+                </div>
+
+                <div class="filter-usage-bar">
+                    <span class="filter-usage-text" id="filterUsageText">3 of 5 custom filters used</span>
+                    <div class="filter-usage-track">
+                        <div class="filter-usage-fill" id="filterUsageFill" style="width: 60%;"></div>
+                    </div>
+                </div>
+
+                <div class="table-section">
+                    <table class="table" id="filtersTable">
+                        <thead>
+                            <tr>
+                                <th class="sortable sorted sorted-asc" onclick="sortFilters('name')">
+                                    <div class="th-content">
+                                        Filter Name
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6" fill="none" stroke="#6d7175" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 5l4-4 4 4"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6" fill="none" stroke="#6d7175" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l4 4 4-4"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th>Values</th>
+                                <th class="th-center sortable" onclick="sortFilters('resourceCount')">
+                                    <div class="th-content" style="justify-content: center;">
+                                        Resources
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6" fill="none" stroke="#6d7175" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 5l4-4 4 4"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6" fill="none" stroke="#6d7175" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l4 4 4-4"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="th-center sortable" onclick="sortFilters('status')">
+                                    <div class="th-content" style="justify-content: center;">
+                                        Status
+                                        <span class="sort-icon">
+                                            <svg class="sort-asc" viewBox="0 0 10 6" fill="none" stroke="#6d7175" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 5l4-4 4 4"/></svg>
+                                            <svg class="sort-desc" viewBox="0 0 10 6" fill="none" stroke="#6d7175" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1l4 4 4-4"/></svg>
+                                        </span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="filterTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="filtersEmptyState" style="display: none;">
+                    <div class="empty-state-title">No custom filters yet</div>
+                    <div class="empty-state-description">Create filters to let customers narrow resources by attributes like technique, product type, or region.</div>
+                    <button class="btn btn-primary" onclick="window.location.href='edit-filter.html'">Create filter</button>
+                </div>
+            </div>
+
+            <!-- Tab Content: Tips -->
+            <div class="tab-content" id="tab-tips">
+                <div class="tips-container">
+                    <div class="tips-section">
+                        <h3 class="tips-heading">How to organize your library</h3>
+                        <p class="tips-intro">A well-organized library helps customers find what they need quickly. Here's how categories, tags, and custom filters work together:</p>
+                        
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <div class="tip-icon"><svg viewBox="0 0 20 20"><path d="M2.5 4a1.5 1.5 0 0 1 1.5-1.5h3.378a1.5 1.5 0 0 1 1.06.44l1.122 1.12a.5.5 0 0 0 .354.147h4.586a1.5 1.5 0 0 1 1.5 1.5v.043h-13.5v-.25Zm0 3.25v6.25a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-6.25a1.5 1.5 0 0 0-1.5-1.5h-12a1.5 1.5 0 0 0-1.5 1.5Z"/></svg></div>
+                                <h4>Parent Categories</h4>
+                                <p>These become the main navigation tabs at the top of your library. Think of them as your top-level sections — Datasheets, Manuals, Certifications, Catalogs.</p>
+                                <div class="tip-best-practice">
+                                    💡 Keep to 5–8 max — too many tabs overwhelm customers
+                                </div>
+                            </div>
+
+                            <div class="tip-card">
+                                <div class="tip-icon"><svg viewBox="0 0 20 20"><path d="M7.25 3.5a.75.75 0 0 0 0 1.5h5.5a.75.75 0 0 0 0-1.5h-5.5Z"/><path d="M5 6.5a.75.75 0 0 1 .75-.75h8.5a.75.75 0 0 1 0 1.5h-8.5a.75.75 0 0 1-.75-.75Z"/><path fill-rule="evenodd" d="M3.5 10.75a2.75 2.75 0 0 1 2.75-2.75h7.5a2.75 2.75 0 0 1 2.75 2.75v3a2.75 2.75 0 0 1-2.75 2.75h-7.5a2.75 2.75 0 0 1-2.75-2.75v-3Zm2.75-1.25c-.69 0-1.25.56-1.25 1.25v3c0 .69.56 1.25 1.25 1.25h7.5c.69 0 1.25-.56 1.25-1.25v-3c0-.69-.56-1.25-1.25-1.25h-7.5Z"/></svg></div>
+                                <h4>Sub-categories</h4>
+                                <p>These appear as sidebar filters when browsing a parent category. Under "Manuals" you might have Installation Guides, User Manuals, and Quick Start.</p>
+                                <div class="tip-best-practice">
+                                    💡 Use for document types, not brands or product lines
+                                </div>
+                            </div>
+
+                            <div class="tip-card">
+                                <div class="tip-icon"><svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.217 3.5a1.5 1.5 0 0 1 1.06.44l6.783 6.782a1.5 1.5 0 0 1 0 2.122l-4.657 4.656a1.5 1.5 0 0 1-2.121 0l-6.782-6.782a1.5 1.5 0 0 1-.44-1.061v-4.657a1.5 1.5 0 0 1 1.5-1.5h4.657Zm-1.717 4a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Z"/></svg></div>
+                                <h4>Tags</h4>
+                                <p>Labels that work across your entire library, not just one category. Customers can also filter by tags, making it easy to find resources by brand, product series, certification, or language.</p>
+                                <div class="tip-best-practice">
+                                    💡 A single resource can have many tags — great for cross-cutting attributes
+                                </div>
+                            </div>
+
+                            <div class="tip-card">
+                                <div class="tip-icon"><svg viewBox="0 0 20 20"><path d="M3 6a.75.75 0 0 1 .75-.75h12.5a.75.75 0 0 1 0 1.5h-12.5a.75.75 0 0 1-.75-.75Z"/><path d="M6.75 14a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75Z"/><path d="M5.5 9.25a.75.75 0 0 0 0 1.5h9a.75.75 0 0 0 0-1.5h-9Z"/></svg></div>
+                                <h4>Custom Filters</h4>
+                                <p>Create up to 5 filter groups for structured attributes that don't fit as categories or tags. Customers see these as additional sidebar filter sections.</p>
+                                <div class="tip-best-practice">
+                                    💡 Great for Technique, Column Type, Country, or any attribute-based filtering
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tips-section">
+                        <div class="industry-cta">
+                            <div class="industry-cta-text">
+                                <h3>Get ideas for your industry</h3>
+                                <p>See how other businesses organize their resource libraries</p>
+                            </div>
+                            <select id="industrySelect" class="industry-select" onchange="changeIndustryExample()">
+                                <option value="">Select your industry...</option>
+                                <option value="electronics">Electronics Distributor</option>
+                                <option value="industrial">Industrial Equipment</option>
+                                <option value="medical">Medical Devices</option>
+                                <option value="audio">Audio/AV Equipment</option>
+                                <option value="hvac">HVAC & Building</option>
+                            </select>
+                        </div>
+
+                        <div class="example-structure" id="industryExample" style="display: none;">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Categories data (flat with parent paths)
+        const categoriesData = [
+            { id: '1', name: 'Datasheets', path: [], visibility: 'public', restrictions: [], status: 'active', order: 0, resources: 24 },
+            { id: '2', name: 'Manuals', path: [], visibility: 'logged-in', restrictions: [], status: 'active', order: 10, resources: 47 },
+            { id: '3', name: 'Installation Guides', path: ['Manuals'], visibility: 'logged-in', restrictions: [], status: 'active', order: 0, resources: 18 },
+            { id: '4', name: 'User Manuals', path: ['Manuals'], visibility: 'logged-in', restrictions: [], status: 'active', order: 10, resources: 15 },
+            { id: '5', name: 'Quick Start Guides', path: ['Manuals'], visibility: 'public', restrictions: [], status: 'active', order: 20, resources: 14 },
+            { id: '6', name: 'Accessories', path: [], visibility: 'public', restrictions: [], status: 'active', order: 20, resources: 35 },
+            { id: '7', name: 'Cables', path: ['Accessories'], visibility: 'public', restrictions: [], status: 'active', order: 0, resources: 12 },
+            { id: '8', name: 'Adapters', path: ['Accessories'], visibility: 'public', restrictions: [], status: 'active', order: 10, resources: 10 },
+            { id: '9', name: 'Power Supplies', path: ['Accessories'], visibility: 'restricted', restrictions: ['VIP', 'Dealer'], status: 'active', order: 20, resources: 13 },
+            { id: '10', name: 'Certifications', path: [], visibility: 'restricted', restrictions: ['Dealer', 'Partner'], status: 'active', order: 30, resources: 20 },
+            { id: '11', name: 'ISO Certificates', path: ['Certifications'], visibility: 'restricted', restrictions: ['Dealer'], status: 'active', order: 0, resources: 8 },
+            { id: '12', name: 'Safety Certificates', path: ['Certifications'], visibility: 'restricted', restrictions: ['Gold', 'Premium', 'VIP'], status: 'draft', order: 10, resources: 12 },
+            { id: '13', name: 'Technical Specs', path: [], visibility: 'public', restrictions: [], status: 'active', order: 40, resources: 31 },
+            { id: '14', name: 'Training Videos', path: [], visibility: 'logged-in', restrictions: [], status: 'active', order: 50, resources: 22 },
+            { id: '15', name: 'Product Catalogs', path: [], visibility: 'public', restrictions: [], status: 'active', order: 60, resources: 16 },
+        ];
+
+        // Tags data
+        const tagsData = [
+            { id: '1', name: 'New', resourceCount: 45 },
+            { id: '2', name: 'Featured', resourceCount: 23 },
+            { id: '3', name: 'Popular', resourceCount: 89 },
+            { id: '4', name: 'Updated', resourceCount: 34 },
+            { id: '5', name: 'Archived', resourceCount: 12 },
+            { id: '6', name: 'Technical', resourceCount: 156 },
+            { id: '7', name: 'Marketing', resourceCount: 28 },
+            { id: '8', name: 'Internal', resourceCount: 67 },
+        ];
+
+        // Filters data
+        const filtersData = [
+            { id: '1', name: 'Technique', values: ['HPLC', 'GC', 'LC-MS', 'IC', 'GPC'], resourceCount: 234, status: 'active' },
+            { id: '2', name: 'Column Type', values: ['C18', 'C8', 'HILIC', 'Phenyl', 'CN', 'Amino'], resourceCount: 189, status: 'active' },
+            { id: '3', name: 'Country', values: ['USA', 'Germany', 'Japan', 'UK', 'China'], resourceCount: 312, status: 'draft' },
+        ];
+
+        let catCurrentPage = 1;
+        let catItemsPerPage = 10;
+        let catSortKey = 'name';
+        let catSortDirection = 'asc';
+        let tagCurrentPage = 1;
+        let tagItemsPerPage = 10;
+        let tagSortKey = 'name';
+        let tagSortDirection = 'asc';
+        let filterSortKey = 'name';
+        let filterSortDirection = 'asc';
+        let currentTab = 'categories';
+        // Sorting functions
+        function sortCategories(key) {
+            if (catSortKey === key) {
+                catSortDirection = catSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                catSortKey = key;
+                catSortDirection = 'asc';
+            }
+            catCurrentPage = 1;
+            updateCategorySortHeaders();
+            renderCategoriesTable();
+        }
+
+        function sortTags(key) {
+            if (tagSortKey === key) {
+                tagSortDirection = tagSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                tagSortKey = key;
+                tagSortDirection = 'asc';
+            }
+            tagCurrentPage = 1;
+            updateTagSortHeaders();
+            renderTagsTable();
+        }
+
+        function updateCategorySortHeaders() {
+            const table = document.getElementById('categoriesTable');
+            table.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('sorted', 'sorted-asc', 'sorted-desc');
+            });
+            const keyMap = { 'name': 0, 'visibility': 1, 'status': 2, 'order': 3 };
+            const th = table.querySelectorAll('th.sortable')[keyMap[catSortKey]];
+            if (th) {
+                th.classList.add('sorted', `sorted-${catSortDirection}`);
+            }
+        }
+
+        function updateTagSortHeaders() {
+            const table = document.getElementById('tagsTable');
+            table.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('sorted', 'sorted-asc', 'sorted-desc');
+            });
+            const keyMap = { 'name': 0, 'resourceCount': 1 };
+            const th = table.querySelectorAll('th.sortable')[keyMap[tagSortKey]];
+            if (th) {
+                th.classList.add('sorted', `sorted-${tagSortDirection}`);
+            }
+        }
+
+        function getSortedCategories() {
+            // Group subcategories under their parent
+            // 1. Separate parents and children
+            const parents = categoriesData.filter(c => c.path.length === 0);
+            const children = categoriesData.filter(c => c.path.length > 0);
+
+            // 2. Sort parents by the current sort key
+            parents.sort((a, b) => {
+                let aVal, bVal;
+                if (catSortKey === 'name') {
+                    aVal = a.name;
+                    bVal = b.name;
+                } else {
+                    aVal = a[catSortKey];
+                    bVal = b[catSortKey];
+                }
+                if (typeof aVal === 'string') { aVal = aVal.toLowerCase(); bVal = bVal.toLowerCase(); }
+                if (aVal < bVal) return catSortDirection === 'asc' ? -1 : 1;
+                if (aVal > bVal) return catSortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            // 3. Build grouped list: parent followed by its children (sorted by order)
+            const result = [];
+            parents.forEach(parent => {
+                result.push(parent);
+                const myChildren = children
+                    .filter(c => c.path[0] === parent.name)
+                    .sort((a, b) => a.order - b.order);
+                result.push(...myChildren);
+            });
+
+            return result;
+        }
+
+        function getSortedTags() {
+            return [...tagsData].sort((a, b) => {
+                let aVal = a[tagSortKey];
+                let bVal = b[tagSortKey];
+                
+                if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                }
+                
+                if (aVal < bVal) return tagSortDirection === 'asc' ? -1 : 1;
+                if (aVal > bVal) return tagSortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            currentTab = tabName;
+
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+                content.classList.remove('active');
+            });
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.style.display = 'block';
+            activeTab.classList.add('active');
+
+            // Update page title per tab
+            const titles = {
+                categories: 'Categories',
+                tags: 'Tags',
+                filters: 'Filters',
+                tips: 'Tips'
+            };
+            document.getElementById('pageTitle').textContent = titles[tabName] || 'Categories';
+
+            // Show library visibility only on Categories tab
+            document.getElementById('libraryVisibility').style.display = tabName === 'categories' ? 'flex' : 'none';
+
+            // Update add button
+            const addBtn = document.getElementById('addBtn');
+            if (tabName === 'categories') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.textContent = 'Add category';
+                addBtn.disabled = false;
+            } else if (tabName === 'tags') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.textContent = 'Add tag';
+                addBtn.disabled = false;
+            } else if (tabName === 'filters') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.textContent = 'Add filter';
+                addBtn.disabled = filtersData.length >= 5;
+            } else {
+                addBtn.style.display = 'none';
+            }
+        }
+
+        function handleAddClick() {
+            if (currentTab === 'categories') {
+                window.location.href = 'access-rules-ux.html';
+            } else if (currentTab === 'tags') {
+                alert('Open: Add Tag modal/page');
+            } else if (currentTab === 'filters') {
+                if (filtersData.length >= 5) { alert('Maximum of 5 custom filters reached.'); return; }
+                window.location.href = 'edit-filter.html';
+            }
+        }
+
+        // Get visibility HTML
+        function getVisibilityHTML(visibility) {
+            const isPublic = visibility === 'public';
+            
+            const icon = isPublic 
+                ? `<svg viewBox="0 0 24 24" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                   </svg>`
+                : `<svg viewBox="0 0 24 24" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                   </svg>`;
+
+            let text = '';
+            switch (visibility) {
+                case 'public': text = 'Public'; break;
+                case 'logged-in': text = 'Logged-in only'; break;
+                case 'restricted': text = 'Restricted'; break;
+            }
+
+            return `<div class="visibility-cell">
+                <div class="access-icon">${icon}</div>
+                ${text}
+            </div>`;
+        }
+
+        // Render categories table
+        function renderCategoriesTable() {
+            const sortedData = getSortedCategories();
+            const totalPages = Math.ceil(sortedData.length / catItemsPerPage);
+            const start = (catCurrentPage - 1) * catItemsPerPage;
+            const end = start + catItemsPerPage;
+            const pageItems = sortedData.slice(start, end);
+
+            const tbody = document.getElementById('catTableBody');
+            tbody.innerHTML = pageItems.map(cat => {
+                const isSubcategory = cat.path.length > 0;
+                const nameHTML = isSubcategory
+                    ? `<span class="subcategory-indent">
+                            <svg viewBox="0 0 14 14" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 2v6c0 1.1.9 2 2 2h6"/>
+                                <path d="M9 8l2 2-2 2"/>
+                            </svg>
+                       </span>
+                       <span class="category-name">${cat.name}</span>`
+                    : `<span class="category-name">${cat.name}</span>`;
+
+                const resourceCount = cat.resources != null ? `<span class="resource-count">(${cat.resources})</span>` : '';
+
+                const restrictionsHTML = cat.restrictions.length > 0
+                    ? cat.restrictions.slice(0, 3).join(', ') + (cat.restrictions.length > 3 ? ` <span class="more-link">+${cat.restrictions.length - 3} more</span>` : '')
+                    : '<span class="none-text">None</span>';
+
+                return `
+                <tr onclick="editCategory('${cat.id}')" data-id="${cat.id}" class="${isSubcategory ? 'subcategory-row' : 'parent-row'}">
+                    <td>
+                        <div class="category-name-cell">
+                            ${nameHTML}
+                            ${resourceCount}
+                        </div>
+                    </td>
+                    <td>${getVisibilityHTML(cat.visibility)}</td>
+                    <td class="td-restrictions">${restrictionsHTML}</td>
+                    <td class="td-center">
+                        <span class="status-badge status-${cat.status}">${cat.status === 'active' ? 'Active' : 'Draft'}</span>
+                    </td>
+                    <td class="td-order" onclick="event.stopPropagation()">
+                        <button type="button" class="order-display" onclick="startEditOrder('${cat.id}')" id="order-display-${cat.id}">
+                            <span class="order-value">${cat.order}</span>
+                            <span class="order-pencil">
+                                <svg viewBox="0 0 24 24" stroke-width="2">
+                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="order-input-wrapper" id="order-input-wrapper-${cat.id}">
+                            <input type="number" class="order-input" value="${cat.order}" 
+                                id="order-input-${cat.id}"
+                                onblur="finishEditOrder('${cat.id}')"
+                                onkeydown="handleOrderKeydown(event, '${cat.id}')">
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+
+            // Update range and pagination buttons
+            const rangeStart = start + 1;
+            const rangeEnd = Math.min(end, sortedData.length);
+            document.getElementById('catRange').textContent = `${rangeStart}-${rangeEnd} of ${sortedData.length}`;
+            document.getElementById('catPrevBtn').disabled = catCurrentPage === 1;
+            document.getElementById('catNextBtn').disabled = catCurrentPage === totalPages;
+        }
+
+        // Render tags table
+        function renderTagsTable() {
+            const sortedData = getSortedTags();
+            const totalPages = Math.ceil(sortedData.length / tagItemsPerPage) || 1;
+            const start = (tagCurrentPage - 1) * tagItemsPerPage;
+            const end = start + tagItemsPerPage;
+            const pageItems = sortedData.slice(start, end);
+
+            const tbody = document.getElementById('tagTableBody');
+            tbody.innerHTML = pageItems.map(tag => `
+                <tr onclick="editTag('${tag.id}')" data-id="${tag.id}">
+                    <td>
+                        <span class="tag-badge">${tag.name}</span>
+                    </td>
+                    <td class="td-center">
+                        <span class="resource-count">${tag.resourceCount}</span>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Update range and pagination buttons
+            const rangeStart = sortedData.length > 0 ? start + 1 : 0;
+            const rangeEnd = Math.min(end, sortedData.length);
+            document.getElementById('tagRange').textContent = `${rangeStart}-${rangeEnd} of ${sortedData.length}`;
+            document.getElementById('tagPrevBtn').disabled = tagCurrentPage === 1;
+            document.getElementById('tagNextBtn').disabled = tagCurrentPage === totalPages || sortedData.length === 0;
+        }
+
+        // Pagination - Categories
+        function catPrevPage() {
+            if (catCurrentPage > 1) {
+                catCurrentPage--;
+                renderCategoriesTable();
+            }
+        }
+
+        function catNextPage() {
+            const sortedData = getSortedCategories();
+            const totalPages = Math.ceil(sortedData.length / catItemsPerPage);
+            if (catCurrentPage < totalPages) {
+                catCurrentPage++;
+                renderCategoriesTable();
+            }
+        }
+
+        // Pagination - Tags
+        function tagPrevPage() {
+            if (tagCurrentPage > 1) {
+                tagCurrentPage--;
+                renderTagsTable();
+            }
+        }
+
+        function tagNextPage() {
+            const sortedData = getSortedTags();
+            const totalPages = Math.ceil(sortedData.length / tagItemsPerPage);
+            if (tagCurrentPage < totalPages) {
+                tagCurrentPage++;
+                renderTagsTable();
+            }
+        }
+
+        // Inline order editing
+        function startEditOrder(id) {
+            const displayBtn = document.getElementById(`order-display-${id}`);
+            const inputWrapper = document.getElementById(`order-input-wrapper-${id}`);
+            const input = document.getElementById(`order-input-${id}`);
+            
+            displayBtn.classList.add('hidden');
+            inputWrapper.classList.add('editing');
+            input.focus();
+            input.select();
+        }
+
+        function finishEditOrder(id) {
+            const displayBtn = document.getElementById(`order-display-${id}`);
+            const inputWrapper = document.getElementById(`order-input-wrapper-${id}`);
+            const input = document.getElementById(`order-input-${id}`);
+            const valueEl = displayBtn.querySelector('.order-value');
+            
+            // Update display value
+            valueEl.textContent = input.value;
+            
+            // Switch back to display mode
+            inputWrapper.classList.remove('editing');
+            displayBtn.classList.remove('hidden');
+            
+            // Auto-save (in production, this would call the API)
+            console.log(`Saved display order for ${id}: ${input.value}`);
+        }
+
+        function handleOrderKeydown(event, id) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById(`order-input-${id}`).blur();
+            } else if (event.key === 'Escape') {
+                // Reset to original value
+                const displayBtn = document.getElementById(`order-display-${id}`);
+                const input = document.getElementById(`order-input-${id}`);
+                const originalValue = displayBtn.querySelector('.order-value').textContent;
+                input.value = originalValue;
+                
+                // Close without saving
+                const inputWrapper = document.getElementById(`order-input-wrapper-${id}`);
+                inputWrapper.classList.remove('editing');
+                displayBtn.classList.remove('hidden');
+            }
+        }
+
+        // Edit functions - navigate to edit page
+        function editCategory(id) {
+            window.location.href = `access-rules-ux.html?id=${id}`;
+        }
+
+        function editTag(id) {
+            // In production: window.location.href = `/admin/tags/${id}`;
+            console.log(`Navigate to edit tag: ${id}`);
+            alert(`Navigate to edit tag: ${id}`);
+        }
+
+        // ── Filters: sorting & rendering ──
+        function sortFilters(key) {
+            if (filterSortKey === key) {
+                filterSortDirection = filterSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                filterSortKey = key;
+                filterSortDirection = 'asc';
+            }
+            updateFilterSortHeaders();
+            renderFiltersTable();
+        }
+
+        function updateFilterSortHeaders() {
+            const table = document.getElementById('filtersTable');
+            table.querySelectorAll('th.sortable').forEach(th => {
+                th.classList.remove('sorted', 'sorted-asc', 'sorted-desc');
+            });
+            const keyMap = { 'name': 0, 'resourceCount': 1, 'status': 2 };
+            const idx = keyMap[filterSortKey];
+            const ths = table.querySelectorAll('th.sortable');
+            if (ths[idx]) {
+                ths[idx].classList.add('sorted', `sorted-${filterSortDirection}`);
+            }
+        }
+
+        function getSortedFilters() {
+            return [...filtersData].sort((a, b) => {
+                let aVal = a[filterSortKey];
+                let bVal = b[filterSortKey];
+                if (typeof aVal === 'string') { aVal = aVal.toLowerCase(); bVal = bVal.toLowerCase(); }
+                if (aVal < bVal) return filterSortDirection === 'asc' ? -1 : 1;
+                if (aVal > bVal) return filterSortDirection === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function renderFiltersTable() {
+            const tbody = document.getElementById('filterTableBody');
+            const tableSection = document.querySelector('#tab-filters .table-section');
+            const emptyState = document.getElementById('filtersEmptyState');
+            const usageBar = document.querySelector('.filter-usage-bar');
+
+            if (filtersData.length === 0) {
+                tableSection.style.display = 'none';
+                usageBar.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            tableSection.style.display = 'block';
+            usageBar.style.display = 'flex';
+            emptyState.style.display = 'none';
+
+            const sorted = getSortedFilters();
+            tbody.innerHTML = sorted.map(filter => {
+                const preview = filter.values.slice(0, 3).join(', ');
+                const more = filter.values.length - 3;
+                const valuesHTML = more > 0
+                    ? `<span class="filter-values-preview">${preview} <span class="filter-values-more">+${more} more</span></span>`
+                    : `<span class="filter-values-preview">${preview}</span>`;
+
+                return `
+                <tr onclick="window.location.href='edit-filter.html?id=${filter.id}'" style="cursor: pointer;">
+                    <td><span class="category-name">${filter.name}</span></td>
+                    <td>${valuesHTML}</td>
+                    <td class="td-center"><span class="resource-count">${filter.resourceCount}</span></td>
+                    <td class="td-center">
+                        <span class="status-badge status-${filter.status}">
+                            ${filter.status === 'active' ? 'Active' : 'Draft'}
+                        </span>
+                    </td>
+                </tr>`;
+            }).join('');
+
+            updateFilterUsage();
+        }
+
+        function updateFilterUsage() {
+            const text = document.getElementById('filterUsageText');
+            const fill = document.getElementById('filterUsageFill');
+            if (text) text.textContent = `${filtersData.length} of 5 custom filters used`;
+            if (fill) fill.style.width = `${(filtersData.length / 5) * 100}%`;
+            // Update Add button if on filters tab
+            if (currentTab === 'filters') {
+                document.getElementById('addBtn').disabled = filtersData.length >= 5;
+            }
+        }
+
+        // Initial render
+        renderCategoriesTable();
+        renderTagsTable();
+        renderFiltersTable();
+
+        // Auto-switch tab from URL param (e.g. ?tab=filters)
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get('tab');
+            if (tab && ['categories', 'tags', 'filters', 'tips'].includes(tab)) {
+                switchTab(tab);
+            }
+        })();
+
+        // Industry examples data
+        const industryExamples = {
+            electronics: {
+                categories: [
+                    { name: 'Datasheets', level: 'parent' },
+                    { name: 'Manuals', level: 'parent' },
+                    { name: 'Installation Guides', level: 'child' },
+                    { name: 'User Manuals', level: 'child' },
+                    { name: 'Service Manuals', level: 'child' },
+                    { name: 'Certifications', level: 'parent' },
+                    { name: 'Safety', level: 'child' },
+                    { name: 'Compliance', level: 'child' },
+                    { name: 'Software & Drivers', level: 'parent' },
+                ],
+                tags: ['Agilent', 'Keysight', 'Tektronix', 'Series 5000', 'Series 7000', 'RoHS', 'CE Marked'],
+                filters: [
+                    { name: 'Instrument Type', values: ['Oscilloscope', 'Spectrum Analyzer', 'Multimeter'] },
+                    { name: 'Frequency Range', values: ['DC-1GHz', '1-6GHz', '6GHz+'] }
+                ]
+            },
+            industrial: {
+                categories: [
+                    { name: 'Product Catalogs', level: 'parent' },
+                    { name: 'Technical Specs', level: 'parent' },
+                    { name: 'Dimensional Drawings', level: 'child' },
+                    { name: 'Performance Data', level: 'child' },
+                    { name: 'Installation', level: 'parent' },
+                    { name: 'Mounting Instructions', level: 'child' },
+                    { name: 'Wiring Diagrams', level: 'child' },
+                    { name: 'Safety & Compliance', level: 'parent' },
+                    { name: 'Maintenance Guides', level: 'parent' },
+                ],
+                tags: ['Siemens', 'ABB', 'Schneider', 'Heavy Duty', 'Standard', 'IP65', 'IP67', 'ATEX'],
+                filters: [
+                    { name: 'Voltage', values: ['24V', '120V', '240V', '480V'] },
+                    { name: 'IP Rating', values: ['IP54', 'IP65', 'IP67'] }
+                ]
+            },
+            medical: {
+                categories: [
+                    { name: 'Product Information', level: 'parent' },
+                    { name: 'Specifications', level: 'child' },
+                    { name: 'Brochures', level: 'child' },
+                    { name: 'Instructions for Use', level: 'parent' },
+                    { name: 'Regulatory', level: 'parent' },
+                    { name: 'FDA Clearances', level: 'child' },
+                    { name: 'CE Certificates', level: 'child' },
+                    { name: 'ISO Certificates', level: 'child' },
+                    { name: 'Training Materials', level: 'parent' },
+                ],
+                tags: ['Class I', 'Class II', 'FDA Cleared', 'CE Marked', 'Surgical', 'Diagnostic', 'Philips', 'GE Healthcare'],
+                filters: [
+                    { name: 'Device Class', values: ['Class I', 'Class II', 'Class III'] },
+                    { name: 'Department', values: ['Cardiology', 'Radiology', 'Surgery', 'ICU'] }
+                ]
+            },
+            audio: {
+                categories: [
+                    { name: 'Product Catalogs', level: 'parent' },
+                    { name: 'Specifications', level: 'parent' },
+                    { name: 'User Manuals', level: 'parent' },
+                    { name: 'Quick Start Guides', level: 'child' },
+                    { name: 'Full Manuals', level: 'child' },
+                    { name: 'Installation Guides', level: 'parent' },
+                    { name: 'Firmware & Software', level: 'parent' },
+                    { name: 'Application Notes', level: 'parent' },
+                ],
+                tags: ['Shure', 'Sennheiser', 'JBL', 'QSC', 'Wireless', 'Wired', 'Pro Audio', 'Residential'],
+                filters: [
+                    { name: 'Connectivity', values: ['Wireless', 'Wired', 'Bluetooth', 'Dante'] },
+                    { name: 'Application', values: ['Live Sound', 'Studio', 'Installed', 'Conferencing'] }
+                ]
+            },
+            hvac: {
+                categories: [
+                    { name: 'Product Data', level: 'parent' },
+                    { name: 'Submittal Sheets', level: 'child' },
+                    { name: 'Specifications', level: 'child' },
+                    { name: 'Installation', level: 'parent' },
+                    { name: 'Installation Manuals', level: 'child' },
+                    { name: 'Piping Diagrams', level: 'child' },
+                    { name: 'Wiring Diagrams', level: 'child' },
+                    { name: 'Maintenance', level: 'parent' },
+                    { name: 'Parts Lists', level: 'parent' },
+                ],
+                tags: ['Carrier', 'Trane', 'Lennox', 'Daikin', 'Residential', 'Commercial', 'VRF', 'Split System'],
+                filters: [
+                    { name: 'System Type', values: ['Split System', 'VRF', 'Rooftop', 'Chiller'] },
+                    { name: 'Tonnage', values: ['1-5 Ton', '5-20 Ton', '20-50 Ton', '50+ Ton'] }
+                ]
+            }
+        };
+
+        function changeIndustryExample() {
+            const industry = document.getElementById('industrySelect').value;
+            const exampleDiv = document.getElementById('industryExample');
+            
+            if (!industry) {
+                exampleDiv.style.display = 'none';
+                return;
+            }
+            
+            const data = industryExamples[industry];
+            
+            const categoriesHTML = data.categories.map(cat => {
+                if (cat.level === 'parent') {
+                    return `<li class="parent"><svg viewBox="0 0 20 20" width="14" height="14" fill="#616161" style="vertical-align: -2px; margin-right: 4px;"><path d="M2.5 4a1.5 1.5 0 0 1 1.5-1.5h3.378a1.5 1.5 0 0 1 1.06.44l1.122 1.12a.5.5 0 0 0 .354.147h4.586a1.5 1.5 0 0 1 1.5 1.5v.043h-13.5v-.25Zm0 3.25v6.25a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-6.25a1.5 1.5 0 0 0-1.5-1.5h-12a1.5 1.5 0 0 0-1.5 1.5Z"/></svg>${cat.name}</li>`;
+                } else {
+                    return `<li class="child">└ ${cat.name}</li>`;
+                }
+            }).join('');
+            
+            const tagsHTML = data.tags.map(tag => `<li><svg viewBox="0 0 20 20" width="14" height="14" fill="#616161" style="vertical-align: -2px; margin-right: 4px;"><path fill-rule="evenodd" d="M8.217 3.5a1.5 1.5 0 0 1 1.06.44l6.783 6.782a1.5 1.5 0 0 1 0 2.122l-4.657 4.656a1.5 1.5 0 0 1-2.121 0l-6.782-6.782a1.5 1.5 0 0 1-.44-1.061v-4.657a1.5 1.5 0 0 1 1.5-1.5h4.657Zm-1.717 4a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Z"/></svg>${tag}</li>`).join('');
+
+            const filtersHTML = (data.filters || []).map(f =>
+                `<li style="margin-bottom: 6px;"><strong style="color: #303030;">${f.name}</strong><br/><span style="color: #616161; font-size: 12px;">${f.values.join(', ')}</span></li>`
+            ).join('');
+
+            exampleDiv.innerHTML = `
+                <div class="example-column">
+                    <h4>Categories</h4>
+                    <ul class="example-list">${categoriesHTML}</ul>
+                </div>
+                <div class="example-column">
+                    <h4>Tags</h4>
+                    <ul class="example-list">${tagsHTML}</ul>
+                </div>
+                <div class="example-column">
+                    <h4>Custom Filters</h4>
+                    <ul class="example-list">${filtersHTML}</ul>
+                </div>
+            `;
+            exampleDiv.style.display = 'grid';
+        }
+    </script>
+
+    <!-- Internal Testing Mode: Floating Button -->
+    <button class="test-mode-fab" onclick="toggleTestPanel()" title="Internal Testing Mode">
+        <svg viewBox="0 0 24 24">
+            <line x1="4" y1="6" x2="4" y2="20"/>
+            <line x1="12" y1="4" x2="12" y2="18"/>
+            <line x1="20" y1="8" x2="20" y2="22"/>
+            <circle cx="4" cy="10" r="2.5" fill="white" stroke="white" stroke-width="1"/>
+            <circle cx="4" cy="10" r="2.5" fill="none"/>
+            <circle cx="12" cy="8" r="2.5" fill="white" stroke="white" stroke-width="1"/>
+            <circle cx="12" cy="8" r="2.5" fill="none"/>
+            <circle cx="20" cy="14" r="2.5" fill="white" stroke="white" stroke-width="1"/>
+            <circle cx="20" cy="14" r="2.5" fill="none"/>
+        </svg>
+        <div class="fab-badge"></div>
+    </button>
+
+    <!-- Internal Testing Mode: Side Panel -->
+    <div class="test-panel" id="testPanel">
+        <div class="test-panel-header">
+            <div>
+                <h3>Internal Testing Mode</h3>
+                <p>Toggle settings to test different scenarios</p>
+            </div>
+            <button class="test-panel-close" onclick="toggleTestPanel()">&times;</button>
+        </div>
+        <div class="test-panel-body">
+            <div class="test-panel-section">
+                <div class="test-panel-section-label">Scenario Controls</div>
+
+                <div class="test-panel-field">
+                    <label>Library Mode</label>
+                    <select id="libraryModeSelect" onchange="updateLibraryMode(this.value)">
+                        <option value="public">Public</option>
+                        <option value="public-visibility" selected>Public with Visibility Controls</option>
+                        <option value="private-visibility">Private with Visibility Controls</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="test-panel-section">
+                <div class="test-panel-section-label">Dev Notes</div>
+
+                <div class="test-panel-note" onclick="this.classList.toggle('expanded')">
+                    <div class="test-panel-note-title">
+                        <span style="color: #0284c7;">J</span> Library visibility banner
+                        <span class="test-panel-note-chevron">▼</span>
+                    </div>
+                    <div class="test-panel-note-body">
+                        <strong>How it works:</strong><br>
+                        • Text in tab bar changes based on Library Mode selection<br>
+                        • <strong>Public / Public with Visibility Controls:</strong> 🌐 "Your Library is Set to <strong>Public</strong>"<br>
+                        • Tooltip: "Anyone can browse unless a category requires login."<br><br>
+                        • <strong>Private with Visibility Controls:</strong> 🔒 "Your Library is Set to <strong>Private</strong>"<br>
+                        • Tooltip: "Only logged-in customers can browse."
+                    </div>
+                </div>
+
+                <div class="test-panel-note" onclick="this.classList.toggle('expanded')">
+                    <div class="test-panel-note-title">
+                        <span style="color: #0284c7;">J</span> Categories tree hierarchy
+                        <span class="test-panel-note-chevron">▼</span>
+                    </div>
+                    <div class="test-panel-note-body">
+                        • Parent categories show as bold names with resource count<br>
+                        • Subcategories indent with ↳ branch connector<br>
+                        • Subcategories always stay grouped under their parent<br>
+                        • Resource counts show in parentheses (N)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTestPanel() {
+            const panel = document.getElementById('testPanel');
+            panel.classList.toggle('open');
+            document.body.classList.toggle('test-panel-open');
+        }
+
+        function updateLibraryMode(mode) {
+            const visEl = document.getElementById('libraryVisibility');
+            const globeIcon = visEl.querySelector('.globe-icon');
+            const strongEl = visEl.querySelector('strong');
+            const tooltip = visEl.querySelector('.vis-info-tooltip');
+
+            if (mode === 'private-visibility') {
+                // Private: lock icon + "Private"
+                globeIcon.innerHTML = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>';
+                strongEl.textContent = 'Private';
+                tooltip.innerHTML = 'Only logged-in customers can browse. <a href="settings-visibility.html">Change settings</a>';
+            } else {
+                // Public or Public with Visibility Controls: globe icon + "Public"
+                globeIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>';
+                strongEl.textContent = 'Public';
+                tooltip.innerHTML = 'Anyone can browse unless a category requires login. <a href="settings-visibility.html">Change settings</a>';
+            }
+        }
+    </script>
+</body>
+</html>
