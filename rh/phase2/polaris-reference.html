@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>★★★ Polaris Reference - ResourceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: rgba(241, 241, 241, 1); /* --p-color-bg */
+            color: rgba(48, 48, 48, 1); /* --p-color-text */
+        }
+
+        /* ── Page Navigation Bar ── */
+        .page-nav {
+            background: #1a1a2e;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .page-nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.4);
+            margin-right: 20px;
+            padding: 12px 0;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .page-nav a {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .page-nav a:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav a.active {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown {
+            position: relative;
+        }
+        .page-nav-dropdown > button {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .page-nav-dropdown > button:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav-dropdown.active > button {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown-chevron {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        .page-nav-submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #16162a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0 0 8px 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            overflow: hidden;
+            z-index: 9001;
+        }
+        .page-nav-dropdown:hover .page-nav-submenu,
+        .page-nav-submenu:hover {
+            display: block;
+        }
+        .page-nav-submenu a {
+            display: block;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: none;
+            transition: all 0.15s;
+        }
+        .page-nav-submenu a:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+        }
+        .page-nav-submenu a.active {
+            color: white;
+            background: rgba(99, 102, 241, 0.15);
+            border-bottom: none;
+        }
+        .page-nav-submenu a.active::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #6366f1;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        /* ── Page Layout ── */
+        .page-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(48, 48, 48, 1);
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            font-size: 13px;
+            color: rgba(97, 97, 97, 1);
+            margin-bottom: 28px;
+        }
+
+        /* ── Section ── */
+        .ref-section {
+            background: rgba(255, 255, 255, 1); /* --p-color-bg-surface */
+            border-radius: 8px; /* Polaris card radius */
+            box-shadow: 0px 4px 6px -2px rgba(26, 26, 26, 0.20); /* --p-shadow-300 */
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ref-section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: rgba(48, 48, 48, 1);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ref-section-title .section-number {
+            background: rgba(48, 48, 48, 1);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .ref-section-desc {
+            font-size: 13px;
+            color: rgba(97, 97, 97, 1);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .ref-divider {
+            border: none;
+            border-top: 1px solid rgba(227, 227, 227, 1);
+            margin: 16px 0;
+        }
+
+        /* ── Swatches ── */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .color-swatch {
+            border: 1px solid rgba(227, 227, 227, 1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .color-swatch-preview {
+            height: 48px;
+        }
+
+        .color-swatch-info {
+            padding: 8px 10px;
+            background: white;
+        }
+
+        .color-swatch-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .color-swatch-value {
+            font-size: 11px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            color: rgba(97, 97, 97, 1);
+        }
+
+        .color-swatch-token {
+            font-size: 10px;
+            color: rgba(97, 97, 97, 1);
+            opacity: 0.7;
+        }
+
+        /* ── Typography ── */
+        .type-row {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(227, 227, 227, 1);
+        }
+
+        .type-row:last-child {
+            border-bottom: none;
+        }
+
+        .type-label {
+            font-size: 11px;
+            font-family: SFMono-Regular, Consolas, monospace;
+            color: rgba(97, 97, 97, 1);
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+
+        .type-sample {
+            color: rgba(48, 48, 48, 1);
+        }
+
+        /* ── Icons ── */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .icon-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 8px;
+            border: 1px solid rgba(227, 227, 227, 1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .icon-card svg {
+            width: 20px;
+            height: 20px;
+            fill: rgba(48, 48, 48, 1);
+        }
+
+        .icon-card .icon-name {
+            font-size: 11px;
+            color: rgba(97, 97, 97, 1);
+            font-family: SFMono-Regular, Consolas, monospace;
+        }
+
+        .icon-card.old svg {
+            width: 20px;
+            height: 20px;
+            stroke: rgba(97, 97, 97, 1);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .compare-col {
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .compare-col.current {
+            background: #fff0f0;
+            border: 1px solid #fcc;
+        }
+
+        .compare-col.polaris {
+            background: #f0fff4;
+            border: 1px solid #b8e6c8;
+        }
+
+        .compare-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .compare-col.current .compare-label { color: #c00; }
+        .compare-col.polaris .compare-label { color: #047b4a; }
+
+        /* ── Buttons ── */
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .p-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 550;
+            cursor: pointer;
+            font-family: inherit;
+            line-height: 1;
+            transition: background 0.15s;
+        }
+
+        .p-btn-primary {
+            background: rgba(48, 48, 48, 1);
+            color: white;
+            border: none;
+        }
+
+        .p-btn-primary:hover {
+            background: rgba(26, 26, 26, 1);
+        }
+
+        .p-btn-secondary {
+            background: rgba(255, 255, 255, 1);
+            color: rgba(48, 48, 48, 1);
+            border: 1px solid rgba(190, 190, 190, 1);
+        }
+
+        .p-btn-secondary:hover {
+            background: rgba(247, 247, 247, 1);
+        }
+
+        .p-btn-tertiary {
+            background: none;
+            border: none;
+            color: rgba(48, 48, 48, 1);
+            padding: 8px 12px;
+        }
+
+        .p-btn-tertiary:hover {
+            background: rgba(241, 241, 241, 1);
+        }
+
+        .p-btn-plain {
+            background: none;
+            border: none;
+            color: rgba(0, 91, 211, 1);
+            padding: 4px;
+            text-decoration: underline;
+        }
+
+        .p-btn-critical {
+            background: rgba(199, 10, 36, 1);
+            color: white;
+            border: none;
+        }
+
+        .p-btn-critical:hover {
+            background: rgba(170, 8, 30, 1);
+        }
+
+        .p-btn-disabled {
+            background: rgba(241, 241, 241, 1);
+            color: rgba(181, 181, 181, 1);
+            border: 1px solid rgba(227, 227, 227, 1);
+            cursor: not-allowed;
+        }
+
+        /* ── Badges ── */
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .p-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 550;
+            line-height: 1.3;
+        }
+
+        .p-badge-default { background: rgba(227, 227, 227, 1); color: rgba(48, 48, 48, 1); }
+        .p-badge-info { background: rgba(234, 244, 255, 1); color: rgba(0, 58, 135, 1); }
+        .p-badge-success { background: rgba(205, 254, 225, 1); color: rgba(0, 80, 57, 1); }
+        .p-badge-attention { background: rgba(255, 248, 219, 1); color: rgba(75, 54, 0, 1); }
+        .p-badge-warning { background: rgba(255, 237, 194, 1); color: rgba(74, 48, 0, 1); }
+        .p-badge-critical { background: rgba(254, 211, 209, 1); color: rgba(142, 0, 18, 1); }
+        .p-badge-new { background: rgba(227, 227, 227, 1); color: rgba(48, 48, 48, 1); }
+        .p-badge-read-only { background: rgba(227, 227, 227, 1); color: rgba(97, 97, 97, 1); }
+
+        .p-badge svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* ── Banners ── */
+        .p-banner {
+            display: flex;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            align-items: flex-start;
+        }
+
+        .p-banner:last-child { margin-bottom: 0; }
+
+        .p-banner-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        .p-banner-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .p-banner-content {
+            flex: 1;
+        }
+
+        .p-banner-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .p-banner-text {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .p-banner-info {
+            background: rgba(234, 244, 255, 1);
+            border: 1px solid rgba(145, 208, 255, 1);
+        }
+        .p-banner-info .p-banner-icon svg { fill: rgba(0, 91, 211, 1); }
+        .p-banner-info .p-banner-title { color: rgba(0, 58, 135, 1); }
+        .p-banner-info .p-banner-text { color: rgba(0, 58, 135, 1); }
+
+        .p-banner-success {
+            background: rgba(205, 254, 225, 1);
+            border: 1px solid rgba(4, 123, 93, 1);
+        }
+        .p-banner-success .p-banner-icon svg { fill: rgba(4, 123, 93, 1); }
+        .p-banner-success .p-banner-title { color: rgba(0, 80, 57, 1); }
+        .p-banner-success .p-banner-text { color: rgba(0, 80, 57, 1); }
+
+        .p-banner-warning {
+            background: rgba(255, 237, 194, 1);
+            border: 1px solid rgba(255, 184, 0, 1);
+        }
+        .p-banner-warning .p-banner-icon svg { fill: rgba(138, 97, 0, 1); }
+        .p-banner-warning .p-banner-title { color: rgba(74, 48, 0, 1); }
+        .p-banner-warning .p-banner-text { color: rgba(74, 48, 0, 1); }
+
+        .p-banner-critical {
+            background: rgba(254, 211, 209, 1);
+            border: 1px solid rgba(199, 10, 36, 1);
+        }
+        .p-banner-critical .p-banner-icon svg { fill: rgba(199, 10, 36, 1); }
+        .p-banner-critical .p-banner-title { color: rgba(142, 0, 18, 1); }
+        .p-banner-critical .p-banner-text { color: rgba(142, 0, 18, 1); }
+
+        /* ── Cards demo ── */
+        .card-demo {
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px -2px rgba(26, 26, 26, 0.20);
+            background: white;
+        }
+
+        .card-demo-subdued {
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px -2px rgba(26, 26, 26, 0.20);
+            background: rgba(247, 247, 247, 1);
+        }
+
+        .card-demo-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(48, 48, 48, 1);
+            margin-bottom: 8px;
+        }
+
+        .card-demo-text {
+            font-size: 13px;
+            color: rgba(97, 97, 97, 1);
+            line-height: 1.5;
+        }
+
+        /* ── Table demo ── */
+        .p-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .p-table th {
+            text-align: left;
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 650;
+            color: rgba(97, 97, 97, 1);
+            border-bottom: 1px solid rgba(227, 227, 227, 1);
+            background: rgba(247, 247, 247, 1);
+        }
+
+        .p-table td {
+            padding: 12px 16px;
+            font-size: 13px;
+            color: rgba(48, 48, 48, 1);
+            border-bottom: 1px solid rgba(227, 227, 227, 1);
+        }
+
+        .p-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .p-table tr:hover td {
+            background: rgba(247, 247, 247, 1);
+        }
+
+        .p-table-link {
+            color: rgba(0, 91, 211, 1);
+            text-decoration: none;
+            font-weight: 550;
+        }
+
+        .p-table-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Forms demo ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .p-field {
+            margin-bottom: 0;
+        }
+
+        .p-field-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 550;
+            color: rgba(48, 48, 48, 1);
+            margin-bottom: 4px;
+        }
+
+        .p-field-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(190, 190, 190, 1);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            color: rgba(48, 48, 48, 1);
+            background: white;
+            transition: border-color 0.15s;
+        }
+
+        .p-field-input:focus {
+            outline: none;
+            border-color: rgba(0, 91, 211, 1);
+            box-shadow: 0 0 0 1px rgba(0, 91, 211, 1);
+        }
+
+        .p-field-input::placeholder {
+            color: rgba(181, 181, 181, 1);
+        }
+
+        .p-field-help {
+            font-size: 12px;
+            color: rgba(97, 97, 97, 1);
+            margin-top: 4px;
+        }
+
+        .p-select {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: 1px solid rgba(190, 190, 190, 1);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            color: rgba(48, 48, 48, 1);
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23616161' fill-rule='evenodd' d='M5.72 8.47a.75.75 0 0 1 1.06 0l3.47 3.47 3.47-3.47a.75.75 0 1 1 1.06 1.06l-4 4a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 0 1 0-1.06Z'/%3E%3C/svg%3E") no-repeat right 8px center;
+            background-size: 20px;
+            appearance: none;
+        }
+
+        .p-select:focus {
+            outline: none;
+            border-color: rgba(0, 91, 211, 1);
+            box-shadow: 0 0 0 1px rgba(0, 91, 211, 1);
+        }
+
+        .p-checkbox-row, .p-radio-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .p-checkbox, .p-radio {
+            width: 18px;
+            height: 18px;
+            accent-color: rgba(48, 48, 48, 1);
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .p-checkbox-label, .p-radio-label {
+            font-size: 13px;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .p-toggle {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .p-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .p-toggle-track {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(190, 190, 190, 1);
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .p-toggle-thumb {
+            position: absolute;
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .p-toggle input:checked + .p-toggle-track {
+            background-color: rgba(48, 48, 48, 1);
+        }
+
+        .p-toggle input:checked + .p-toggle-track .p-toggle-thumb {
+            left: 19px;
+        }
+
+        /* ── Progress ── */
+        .p-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(227, 227, 227, 1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .p-progress-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .p-progress-highlight .p-progress-bar { background: rgba(0, 91, 211, 1); }
+        .p-progress-success .p-progress-bar { background: rgba(4, 123, 93, 1); }
+        .p-progress-critical .p-progress-bar { background: rgba(199, 10, 36, 1); }
+        .p-progress-primary .p-progress-bar { background: rgba(48, 48, 48, 1); }
+
+        .p-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(227, 227, 227, 1);
+            border-top: 3px solid rgba(48, 48, 48, 1);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: inline-block;
+        }
+
+        .p-spinner-small {
+            width: 16px;
+            height: 16px;
+            border-width: 2px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Tags ── */
+        .p-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: rgba(241, 241, 241, 1);
+            border-radius: 6px;
+            font-size: 12px;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .p-tag-remove {
+            width: 16px;
+            height: 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            padding: 0;
+        }
+
+        .p-tag-remove:hover {
+            background: rgba(227, 227, 227, 1);
+        }
+
+        .p-tag-remove svg {
+            width: 12px;
+            height: 12px;
+            fill: rgba(97, 97, 97, 1);
+        }
+
+        /* ── Tooltip demo ── */
+        .tooltip-demo {
+            position: relative;
+            display: inline-block;
+        }
+
+        .p-tooltip {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(48, 48, 48, 1);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .p-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: rgba(48, 48, 48, 1);
+        }
+
+        /* ── Skeleton ── */
+        .p-skeleton-line {
+            height: 10px;
+            background: rgba(227, 227, 227, 1);
+            border-radius: 4px;
+            margin-bottom: 8px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .p-skeleton-line:last-child {
+            width: 60%;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ── Pagination ── */
+        .p-pagination {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .p-pagination-btn {
+            padding: 6px 10px;
+            border: 1px solid rgba(190, 190, 190, 1);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .p-pagination-btn:hover {
+            background: rgba(247, 247, 247, 1);
+        }
+
+        .p-pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .p-pagination-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: rgba(48, 48, 48, 1);
+        }
+
+        .p-pagination-label {
+            font-size: 13px;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        /* ── Token table ── */
+        .token-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .token-table th {
+            text-align: left;
+            padding: 6px 10px;
+            font-weight: 600;
+            color: rgba(97, 97, 97, 1);
+            border-bottom: 1px solid rgba(227, 227, 227, 1);
+            font-size: 11px;
+        }
+
+        .token-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid rgba(241, 241, 241, 1);
+            font-family: SFMono-Regular, Consolas, monospace;
+            color: rgba(48, 48, 48, 1);
+        }
+
+        .token-table td:first-child {
+            font-family: inherit;
+            font-weight: 550;
+        }
+
+        .inline-swatch {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1px solid rgba(227, 227, 227, 1);
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        /* ── Shopify-style Left Sidebar ── */
+        .app-layout {
+            display: flex;
+            min-height: calc(100vh - 44px);
+        }
+
+        .app-sidebar {
+            width: 240px;
+            background: #f6f6f7;
+            border-right: 1px solid #e1e3e5;
+            padding: 12px 8px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            padding: 8px 12px 4px;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 7px 12px;
+            font-size: 13px;
+            color: #616161;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.15s;
+            font-weight: 500;
+        }
+
+        .sidebar-nav li a:hover {
+            background: #e8e8e8;
+            color: #202223;
+        }
+
+        .sidebar-nav li a.active {
+            background: #e8e8e8;
+            color: #202223;
+            font-weight: 600;
+        }
+
+        .app-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* ── Phase Toggle ── */
+        .phase-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 2px;
+        }
+        .phase-btn {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .phase-btn:hover {
+            color: rgba(255,255,255,0.8);
+        }
+        .phase-btn.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Navigation -->
+    <nav class="page-nav">
+        <span class="page-nav-label">UX Screens</span>
+        <a href="settings-visibility.html">Settings</a>
+        <div class="page-nav-dropdown">
+            <button>Categories List <span class="page-nav-dropdown-chevron">&#9662;</span></button>
+            <div class="page-nav-submenu">
+                <a href="categories-list.html">Phase 1</a>
+                <a href="categories-list-phase2.html">Phase 2</a>
+            </div>
+        </div>
+        <a href="access-rules-ux.html">Edit Category</a>
+        <a href="polaris-reference.html" class="active">Polaris Reference</a>
+        <div class="phase-toggle">
+            <a href="../phase1/polaris-reference.html" class="phase-btn">Phase 1</a>
+            <a href="javascript:void(0)" class="phase-btn active">Phase 2</a>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <!-- Left Sidebar -->
+        <aside class="app-sidebar">
+            <div class="sidebar-section-title">ResourceHub</div>
+            <ul class="sidebar-nav">
+                <li><a href="#">Resources</a></li>
+                <li><a href="categories-list.html">Categories</a></li>
+                <li><a href="polaris-reference.html" class="active">Library</a></li>
+                <li><a href="#">Plans</a></li>
+                <li><a href="settings-visibility.html">Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="app-main">
+
+    <div class="page-wrapper">
+        <h1 class="page-title">Polaris Design Reference</h1>
+        <p class="page-subtitle">Shopify Polaris design tokens and component patterns for our UX prototype</p>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 1. COLORS -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">1</span> Colors</div>
+            <p class="ref-section-desc">Official Polaris color tokens. These should be used consistently across all pages.</p>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Backgrounds</div>
+            <div class="color-grid" style="margin-bottom: 16px;">
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(241,241,241,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Background</div>
+                        <div class="color-swatch-value">#f1f1f1</div>
+                        <div class="color-swatch-token">--p-color-bg</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(255,255,255,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Surface (Cards)</div>
+                        <div class="color-swatch-value">#ffffff</div>
+                        <div class="color-swatch-token">--p-color-bg-surface</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(247,247,247,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Surface Secondary</div>
+                        <div class="color-swatch-value">#f7f7f7</div>
+                        <div class="color-swatch-token">--p-color-bg-surface-secondary</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Text</div>
+            <div class="color-grid" style="margin-bottom: 16px;">
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(48,48,48,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Text (Primary)</div>
+                        <div class="color-swatch-value">#303030</div>
+                        <div class="color-swatch-token">--p-color-text</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(97,97,97,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Text Secondary</div>
+                        <div class="color-swatch-value">#616161</div>
+                        <div class="color-swatch-token">--p-color-text-secondary</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(181,181,181,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Text Disabled</div>
+                        <div class="color-swatch-value">#b5b5b5</div>
+                        <div class="color-swatch-token">--p-color-text-disabled</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(0,91,211,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Link</div>
+                        <div class="color-swatch-value">#005bd3</div>
+                        <div class="color-swatch-token">--p-color-text-link</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Semantic</div>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(4,123,93,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Success</div>
+                        <div class="color-swatch-value">#047b5d</div>
+                        <div class="color-swatch-token">--p-color-bg-fill-success</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(199,10,36,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Critical</div>
+                        <div class="color-swatch-value">#c70a24</div>
+                        <div class="color-swatch-token">--p-color-bg-fill-critical</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(255,184,0,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Warning</div>
+                        <div class="color-swatch-value">#ffb800</div>
+                        <div class="color-swatch-token">--p-color-bg-fill-warning</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(145,208,255,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Info</div>
+                        <div class="color-swatch-value">#91d0ff</div>
+                        <div class="color-swatch-token">--p-color-bg-fill-info</div>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: rgba(227,227,227,1);"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Border</div>
+                        <div class="color-swatch-value">#e3e3e3</div>
+                        <div class="color-swatch-token">--p-color-border</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 2. TYPOGRAPHY -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">2</span> Typography</div>
+            <p class="ref-section-desc">Polaris Text component variants. Uses system font stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto.</p>
+
+            <div class="type-row">
+                <span class="type-label">heading3xl</span>
+                <span class="type-sample" style="font-size: 30px; font-weight: 700; line-height: 1.2;">Page heading</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">heading2xl</span>
+                <span class="type-sample" style="font-size: 24px; font-weight: 700; line-height: 1.25;">Section title</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">headingXl</span>
+                <span class="type-sample" style="font-size: 20px; font-weight: 650; line-height: 1.3;">Card title</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">headingLg</span>
+                <span class="type-sample" style="font-size: 16px; font-weight: 650; line-height: 1.4;">Group heading</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">headingMd</span>
+                <span class="type-sample" style="font-size: 14px; font-weight: 650; line-height: 1.4;">Subsection</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">headingSm</span>
+                <span class="type-sample" style="font-size: 13px; font-weight: 650; line-height: 1.4;">Small heading</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">bodyLg</span>
+                <span class="type-sample" style="font-size: 14px; font-weight: 400; line-height: 1.5;">Body text large</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">bodyMd</span>
+                <span class="type-sample" style="font-size: 13px; font-weight: 400; line-height: 1.5;">Default body text — most UI copy</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">bodySm</span>
+                <span class="type-sample" style="font-size: 12px; font-weight: 400; line-height: 1.5; color: rgba(97,97,97,1);">Caption, help text, timestamps</span>
+            </div>
+            <div class="type-row">
+                <span class="type-label">bodyXs</span>
+                <span class="type-sample" style="font-size: 11px; font-weight: 400; line-height: 1.4; color: rgba(97,97,97,1);">Smallest text</span>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 3. ICONS -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">3</span> Icons</div>
+            <p class="ref-section-desc">Polaris icons are filled, 20x20 viewBox. Our pages currently use stroke-based Feather icons (24x24). This is the biggest visual gap.</p>
+
+            <div class="compare-row">
+                <div class="compare-col current">
+                    <div class="compare-label">Current (Feather — stroke)</div>
+                    <div class="icon-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="icon-card old">
+                            <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span class="icon-name">Lock</span>
+                        </div>
+                        <div class="icon-card old">
+                            <svg viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                            <span class="icon-name">Globe</span>
+                        </div>
+                        <div class="icon-card old">
+                            <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span class="icon-name">Check</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="compare-col polaris">
+                    <div class="compare-label">Polaris (filled — 20x20)</div>
+                    <div class="icon-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="icon-card">
+                            <svg viewBox="0 0 20 20"><path d="M10.75 13.05a1.5 1.5 0 1 0-1.5 0v.45a.75.75 0 0 0 1.5 0v-.45Z"/><path fill-rule="evenodd" d="M6.25 7.095v-.345a3.75 3.75 0 1 1 7.5 0v.345a3.001 3.001 0 0 1 2.25 2.905v4a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-4a3 3 0 0 1 2.25-2.905Zm1.5-.345a2.25 2.25 0 0 1 4.5 0v.25h-4.5v-.25Zm-2.25 3.25a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-4Z"/></svg>
+                            <span class="icon-name">LockIcon</span>
+                        </div>
+                        <div class="icon-card">
+                            <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 10a7 7 0 1 1 14 0 7 7 0 0 1-14 0Zm7-5.5a5.497 5.497 0 0 0-4.737 2.703l2 1.999c.472.472.737 1.113.737 1.78v.518a.5.5 0 0 0 .5.5 2 2 0 0 1 2 2v1.478a5.504 5.504 0 0 0 4.52-3.228h-1.02a.75.75 0 0 1-.75-.75v-.5a.75.75 0 0 0-.75-.75h-2.5a1.755 1.755 0 0 1-1.07-3.144l.463-.356a.393.393 0 0 0 .152-.312v-.04c0-.885.62-1.624 1.449-1.808a5.531 5.531 0 0 0-.994-.09Zm2.875.81a1.85 1.85 0 0 1-1.477.735.352.352 0 0 0-.353.353v.04c0 .587-.271 1.14-.736 1.499l-.462.356a.256.256 0 0 0 .153.457h2.5a2.25 2.25 0 0 1 2.236 2h.713a5.497 5.497 0 0 0-2.574-5.44Zm-8.375 4.69c0-.443.052-.875.152-1.288l1.55 1.55c.19.191.298.45.298.72v.518a2 2 0 0 0 2 2 .5.5 0 0 1 .5.5v1.41a5.502 5.502 0 0 1-4.5-5.41Z"/></svg>
+                            <span class="icon-name">GlobeIcon</span>
+                        </div>
+                        <div class="icon-card">
+                            <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M15.78 5.97a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.72 2.72 5.97-5.97a.75.75 0 0 1 1.06 0Z"/></svg>
+                            <span class="icon-name">CheckIcon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-top: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">More Polaris Icons Used in Our Pages</div>
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.72 8.47a.75.75 0 0 1 1.06 0l3.47 3.47 3.47-3.47a.75.75 0 1 1 1.06 1.06l-4 4a.75.75 0 0 1-1.06 0l-4-4a.75.75 0 0 1 0-1.06Z"/></svg>
+                    <span class="icon-name">ChevronDown</span>
+                </div>
+                <div class="icon-card">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.53 11.78a.75.75 0 0 1-1.06 0l-3.72-3.72-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06Z"/></svg>
+                    <span class="icon-name">ChevronUp</span>
+                </div>
+                <div class="icon-card">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.78 5.47a.75.75 0 0 1 0 1.06l-3.47 3.47 3.47 3.47a.75.75 0 1 1-1.06 1.06l-4-4a.75.75 0 0 1 0-1.06l4-4a.75.75 0 0 1 1.06 0Z"/></svg>
+                    <span class="icon-name">ChevronLeft</span>
+                </div>
+                <div class="icon-card">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.22 5.47a.75.75 0 0 1 1.06 0l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06-1.06L11.69 10 8.22 6.53a.75.75 0 0 1 0-1.06Z"/></svg>
+                    <span class="icon-name">ChevronRight</span>
+                </div>
+                <div class="icon-card">
+                    <svg viewBox="0 0 20 20"><path d="M10 6a.75.75 0 0 1 .75.75v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5a.75.75 0 0 1 .75-.75Z"/><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0-1.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"/></svg>
+                    <span class="icon-name">PlusCircle</span>
+                </div>
+                <div class="icon-card">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm-1.5 6.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"/></svg>
+                    <span class="icon-name">MinusCircle</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 4. BUTTONS -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">4</span> Buttons</div>
+            <p class="ref-section-desc">Polaris button variants. Border-radius: 8px. Primary uses #303030 dark fill.</p>
+
+            <div class="btn-row" style="margin-bottom: 12px;">
+                <button class="p-btn p-btn-primary">Primary</button>
+                <button class="p-btn p-btn-secondary">Secondary</button>
+                <button class="p-btn p-btn-tertiary">Tertiary</button>
+                <button class="p-btn p-btn-plain">Plain link</button>
+                <button class="p-btn p-btn-critical">Critical</button>
+                <button class="p-btn p-btn-disabled" disabled>Disabled</button>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">With Icons</div>
+            <div class="btn-row">
+                <button class="p-btn p-btn-primary">
+                    <svg viewBox="0 0 20 20" width="16" height="16" fill="white"><path d="M10 6a.75.75 0 0 1 .75.75v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5a.75.75 0 0 1 .75-.75Z"/><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm0-1.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"/></svg>
+                    Add category
+                </button>
+                <button class="p-btn p-btn-secondary">
+                    <svg viewBox="0 0 20 20" width="16" height="16" fill="rgba(48,48,48,1)"><path fill-rule="evenodd" d="M14.53 11.78a.75.75 0 0 1-1.06 0l-3.72-3.72-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06Z"/></svg>
+                    More actions
+                </button>
+            </div>
+
+            <hr class="ref-divider">
+            <table class="token-table">
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Border radius</td><td>8px</td></tr>
+                <tr><td>Font size</td><td>13px</td></tr>
+                <tr><td>Font weight</td><td>550</td></tr>
+                <tr><td>Padding</td><td>8px 16px</td></tr>
+                <tr><td>Primary bg</td><td><span class="inline-swatch" style="background:#303030;"></span>#303030</td></tr>
+                <tr><td>Secondary border</td><td><span class="inline-swatch" style="background:#bebebe;"></span>#bebebe</td></tr>
+                <tr><td>Critical bg</td><td><span class="inline-swatch" style="background:#c70a24;"></span>#c70a24</td></tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 5. BADGES -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">5</span> Badges</div>
+            <p class="ref-section-desc">Polaris Badge tones. Used for status indicators like Active, Draft, etc.</p>
+
+            <div class="badge-row" style="margin-bottom: 16px;">
+                <span class="p-badge p-badge-default">Default</span>
+                <span class="p-badge p-badge-info">Info</span>
+                <span class="p-badge p-badge-success">
+                    <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor"><path fill-rule="evenodd" d="M15.78 5.97a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.72 2.72 5.97-5.97a.75.75 0 0 1 1.06 0Z"/></svg>
+                    Active
+                </span>
+                <span class="p-badge p-badge-attention">Attention</span>
+                <span class="p-badge p-badge-warning">Warning</span>
+                <span class="p-badge p-badge-critical">Critical</span>
+                <span class="p-badge p-badge-read-only">Read-only</span>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">As used in our pages</div>
+            <div class="compare-row">
+                <div class="compare-col current">
+                    <div class="compare-label">Current</div>
+                    <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background: #c9fdd7; color: #1a7f37;">Active</span>
+                    <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 500; background: #e4e5e7; color: #6d7175; margin-left: 8px;">Draft</span>
+                </div>
+                <div class="compare-col polaris">
+                    <div class="compare-label">Polaris</div>
+                    <span class="p-badge p-badge-success">
+                        <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor"><path fill-rule="evenodd" d="M15.78 5.97a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.72 2.72 5.97-5.97a.75.75 0 0 1 1.06 0Z"/></svg>
+                        Active
+                    </span>
+                    <span class="p-badge p-badge-default" style="margin-left: 8px;">Draft</span>
+                </div>
+            </div>
+
+            <hr class="ref-divider">
+            <table class="token-table">
+                <tr><th>Property</th><th>Value</th></tr>
+                <tr><td>Border radius</td><td>10px</td></tr>
+                <tr><td>Font size</td><td>12px</td></tr>
+                <tr><td>Font weight</td><td>550</td></tr>
+                <tr><td>Padding</td><td>3px 8px</td></tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 6. BANNERS -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">6</span> Banners</div>
+            <p class="ref-section-desc">Polaris Banner tones for feedback messages. Each has a distinct background, border, and icon color.</p>
+
+            <div class="p-banner p-banner-info">
+                <div class="p-banner-icon">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm-.75-9.25a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-1.5 0v-4.5Zm.75-1.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+                </div>
+                <div class="p-banner-content">
+                    <div class="p-banner-title">Info banner</div>
+                    <div class="p-banner-text">Use for general informational updates or context.</div>
+                </div>
+            </div>
+
+            <div class="p-banner p-banner-success">
+                <div class="p-banner-icon">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm3.28-8.72a.75.75 0 0 0-1.06-1.06l-3.47 3.47-1.47-1.47a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4-4Z"/></svg>
+                </div>
+                <div class="p-banner-content">
+                    <div class="p-banner-title">Success banner</div>
+                    <div class="p-banner-text">Settings saved successfully.</div>
+                </div>
+            </div>
+
+            <div class="p-banner p-banner-warning">
+                <div class="p-banner-icon">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm-.75-4.75a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-1.5 0v4.5Zm.75 2.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+                </div>
+                <div class="p-banner-content">
+                    <div class="p-banner-title">Warning banner</div>
+                    <div class="p-banner-text">You're approaching your plan limit. 48 of 50 restricted categories used.</div>
+                </div>
+            </div>
+
+            <div class="p-banner p-banner-critical">
+                <div class="p-banner-icon">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm1.25-10.5a.75.75 0 0 0-1.5 0 .75.75 0 0 0 0 1.5.75.75 0 0 0 0-1.5Zm-.5 3.25a.75.75 0 0 0-1.5 0v3.5a.75.75 0 0 0 1.5 0v-3.5Z"/></svg>
+                </div>
+                <div class="p-banner-content">
+                    <div class="p-banner-title">Critical banner</div>
+                    <div class="p-banner-text">This action cannot be undone. All category data will be permanently deleted.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 7. CARDS -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">7</span> Cards</div>
+            <p class="ref-section-desc">Polaris Card: 8px border-radius, shadow-300, 16px padding. No visible border by default.</p>
+
+            <div class="compare-row">
+                <div class="compare-col current">
+                    <div class="compare-label">Current (12px radius, light shadow)</div>
+                    <div style="padding: 16px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: white;">
+                        <div style="font-size: 14px; font-weight: 600; color: #202223; margin-bottom: 6px;">Card Title</div>
+                        <div style="font-size: 13px; color: #6d7175;">Card content goes here with some text.</div>
+                    </div>
+                </div>
+                <div class="compare-col polaris">
+                    <div class="compare-label">Polaris (8px radius, shadow-300)</div>
+                    <div class="card-demo">
+                        <div class="card-demo-title">Card Title</div>
+                        <div class="card-demo-text">Card content goes here with some text.</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Subdued Card</div>
+            <div class="card-demo-subdued" style="max-width: 400px;">
+                <div class="card-demo-title">Subdued Card</div>
+                <div class="card-demo-text">Uses bg-surface-secondary (#f7f7f7) for lower prominence.</div>
+            </div>
+
+            <hr class="ref-divider">
+            <table class="token-table">
+                <tr><th>Property</th><th>Polaris Value</th></tr>
+                <tr><td>Border radius</td><td>8px (--p-border-radius-300)</td></tr>
+                <tr><td>Box shadow</td><td>0px 4px 6px -2px rgba(26,26,26,0.20)</td></tr>
+                <tr><td>Padding</td><td>16px (space-400)</td></tr>
+                <tr><td>Background</td><td>#ffffff (--p-color-bg-surface)</td></tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 8. TABLE -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">8</span> Tables</div>
+            <p class="ref-section-desc">Polaris IndexTable / DataTable patterns with proper header styling.</p>
+
+            <div class="card-demo" style="padding: 0; overflow: hidden;">
+                <table class="p-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Visibility</th>
+                            <th>Status</th>
+                            <th style="text-align: right;">Order</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a class="p-table-link" href="#">Category 1</a></td>
+                            <td>
+                                <span style="display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 20 20" width="16" height="16" fill="rgba(97,97,97,1)"><path d="M10.75 13.05a1.5 1.5 0 1 0-1.5 0v.45a.75.75 0 0 0 1.5 0v-.45Z"/><path fill-rule="evenodd" d="M6.25 7.095v-.345a3.75 3.75 0 1 1 7.5 0v.345a3.001 3.001 0 0 1 2.25 2.905v4a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-4a3 3 0 0 1 2.25-2.905Zm1.5-.345a2.25 2.25 0 0 1 4.5 0v.25h-4.5v-.25Zm-2.25 3.25a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-4Z"/></svg> Logged-in only</span>
+                            </td>
+                            <td><span class="p-badge p-badge-default">Draft</span></td>
+                            <td style="text-align: right;">1</td>
+                        </tr>
+                        <tr>
+                            <td><a class="p-table-link" href="#">Category 2 - VIP</a></td>
+                            <td>
+                                <span style="display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 20 20" width="16" height="16" fill="rgba(97,97,97,1)"><path d="M10.75 13.05a1.5 1.5 0 1 0-1.5 0v.45a.75.75 0 0 0 1.5 0v-.45Z"/><path fill-rule="evenodd" d="M6.25 7.095v-.345a3.75 3.75 0 1 1 7.5 0v.345a3.001 3.001 0 0 1 2.25 2.905v4a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3v-4a3 3 0 0 1 2.25-2.905Zm1.5-.345a2.25 2.25 0 0 1 4.5 0v.25h-4.5v-.25Zm-2.25 3.25a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-4Z"/></svg> Restricted</span>
+                            </td>
+                            <td><span class="p-badge p-badge-success"><svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor"><path fill-rule="evenodd" d="M15.78 5.97a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.72 2.72 5.97-5.97a.75.75 0 0 1 1.06 0Z"/></svg> Active</span></td>
+                            <td style="text-align: right;">2</td>
+                        </tr>
+                        <tr>
+                            <td><a class="p-table-link" href="#">Category 3 - Public</a></td>
+                            <td>
+                                <span style="display: inline-flex; align-items: center; gap: 6px;"><svg viewBox="0 0 20 20" width="16" height="16" fill="rgba(97,97,97,1)"><path fill-rule="evenodd" d="M3 10a7 7 0 1 1 14 0 7 7 0 0 1-14 0Zm7-5.5a5.497 5.497 0 0 0-4.737 2.703l2 1.999c.472.472.737 1.113.737 1.78v.518a.5.5 0 0 0 .5.5 2 2 0 0 1 2 2v1.478a5.504 5.504 0 0 0 4.52-3.228h-1.02a.75.75 0 0 1-.75-.75v-.5a.75.75 0 0 0-.75-.75h-2.5a1.755 1.755 0 0 1-1.07-3.144l.463-.356a.393.393 0 0 0 .152-.312v-.04c0-.885.62-1.624 1.449-1.808a5.531 5.531 0 0 0-.994-.09Zm2.875.81a1.85 1.85 0 0 1-1.477.735.352.352 0 0 0-.353.353v.04c0 .587-.271 1.14-.736 1.499l-.462.356a.256.256 0 0 0 .153.457h2.5a2.25 2.25 0 0 1 2.236 2h.713a5.497 5.497 0 0 0-2.574-5.44Zm-8.375 4.69c0-.443.052-.875.152-1.288l1.55 1.55c.19.191.298.45.298.72v.518a2 2 0 0 0 2 2 .5.5 0 0 1 .5.5v1.41a5.502 5.502 0 0 1-4.5-5.41Z"/></svg> Public</span>
+                            </td>
+                            <td><span class="p-badge p-badge-success"><svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor"><path fill-rule="evenodd" d="M15.78 5.97a.75.75 0 0 1 0 1.06l-6.5 6.5a.75.75 0 0 1-1.06 0l-3.25-3.25a.75.75 0 1 1 1.06-1.06l2.72 2.72 5.97-5.97a.75.75 0 0 1 1.06 0Z"/></svg> Active</span></td>
+                            <td style="text-align: right;">3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr class="ref-divider">
+            <table class="token-table">
+                <tr><th>Property</th><th>Polaris Value</th></tr>
+                <tr><td>Header bg</td><td><span class="inline-swatch" style="background:#f7f7f7;"></span>#f7f7f7 (bg-surface-secondary)</td></tr>
+                <tr><td>Header weight</td><td>650 (semibold)</td></tr>
+                <tr><td>Header font size</td><td>12px</td></tr>
+                <tr><td>Cell font size</td><td>13px</td></tr>
+                <tr><td>Row border</td><td>1px solid #e3e3e3</td></tr>
+                <tr><td>Link color</td><td><span class="inline-swatch" style="background:#005bd3;"></span>#005bd3</td></tr>
+            </table>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 9. FORMS -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">9</span> Forms</div>
+            <p class="ref-section-desc">Polaris form controls: TextField, Select, Checkbox, RadioButton, Toggle.</p>
+
+            <div class="form-grid" style="margin-bottom: 16px;">
+                <div class="p-field">
+                    <label class="p-field-label">Category name *</label>
+                    <input type="text" class="p-field-input" value="User Manuals" />
+                    <div class="p-field-help">Enter a descriptive name for this category</div>
+                </div>
+                <div class="p-field">
+                    <label class="p-field-label">Display order</label>
+                    <input type="number" class="p-field-input" value="2" />
+                </div>
+                <div class="p-field">
+                    <label class="p-field-label">Parent category</label>
+                    <select class="p-select">
+                        <option>None (Top Level Category)</option>
+                        <option>Category 1</option>
+                        <option>Category 2 - VIP</option>
+                    </select>
+                </div>
+                <div class="p-field">
+                    <label class="p-field-label">Visibility</label>
+                    <select class="p-select">
+                        <option>Inherit</option>
+                        <option>Public</option>
+                        <option>Logged-in only</option>
+                        <option>Restricted</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Checkboxes &amp; Radio Buttons</div>
+            <div style="display: flex; gap: 40px; margin-bottom: 16px;">
+                <div>
+                    <div class="p-checkbox-row">
+                        <input type="checkbox" class="p-checkbox" checked />
+                        <label class="p-checkbox-label">Require login</label>
+                    </div>
+                    <div class="p-checkbox-row">
+                        <input type="checkbox" class="p-checkbox" />
+                        <label class="p-checkbox-label">Restrict to tags</label>
+                    </div>
+                    <div class="p-checkbox-row">
+                        <input type="checkbox" class="p-checkbox" disabled />
+                        <label class="p-checkbox-label" style="color: rgba(181,181,181,1);">B2B companies (disabled)</label>
+                    </div>
+                </div>
+                <div>
+                    <div class="p-radio-row">
+                        <input type="radio" name="demo-radio" class="p-radio" checked />
+                        <label class="p-radio-label">Public</label>
+                    </div>
+                    <div class="p-radio-row">
+                        <input type="radio" name="demo-radio" class="p-radio" />
+                        <label class="p-radio-label">Private with controls</label>
+                    </div>
+                    <div class="p-radio-row">
+                        <input type="radio" name="demo-radio" class="p-radio" disabled />
+                        <label class="p-radio-label" style="color: rgba(181,181,181,1);">Upgrade required</label>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Toggle Switch</div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <label class="p-toggle">
+                    <input type="checkbox" checked>
+                    <span class="p-toggle-track"><span class="p-toggle-thumb"></span></span>
+                </label>
+                <span style="font-size: 13px; color: rgba(48,48,48,1);">Testing mode enabled</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <label class="p-toggle">
+                    <input type="checkbox">
+                    <span class="p-toggle-track"><span class="p-toggle-thumb"></span></span>
+                </label>
+                <span style="font-size: 13px; color: rgba(97,97,97,1);">Testing mode disabled</span>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Tags</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <span class="p-tag">VIP <button class="p-tag-remove"><svg viewBox="0 0 20 20"><path d="M12.72 7.28a.75.75 0 0 1 0 1.06l-1.94 1.94 1.94 1.94a.75.75 0 0 1-1.06 1.06L9.72 11.34l-1.94 1.94a.75.75 0 0 1-1.06-1.06l1.94-1.94-1.94-1.94a.75.75 0 0 1 1.06-1.06l1.94 1.94 1.94-1.94a.75.75 0 0 1 1.06 0Z"/></svg></button></span>
+                <span class="p-tag">Gold <button class="p-tag-remove"><svg viewBox="0 0 20 20"><path d="M12.72 7.28a.75.75 0 0 1 0 1.06l-1.94 1.94 1.94 1.94a.75.75 0 0 1-1.06 1.06L9.72 11.34l-1.94 1.94a.75.75 0 0 1-1.06-1.06l1.94-1.94-1.94-1.94a.75.75 0 0 1 1.06-1.06l1.94 1.94 1.94-1.94a.75.75 0 0 1 1.06 0Z"/></svg></button></span>
+                <span class="p-tag">Premium <button class="p-tag-remove"><svg viewBox="0 0 20 20"><path d="M12.72 7.28a.75.75 0 0 1 0 1.06l-1.94 1.94 1.94 1.94a.75.75 0 0 1-1.06 1.06L9.72 11.34l-1.94 1.94a.75.75 0 0 1-1.06-1.06l1.94-1.94-1.94-1.94a.75.75 0 0 1 1.06-1.06l1.94 1.94 1.94-1.94a.75.75 0 0 1 1.06 0Z"/></svg></button></span>
+                <span class="p-tag">Dealer</span>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- 10. PROGRESS & LOADING -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">10</span> Progress &amp; Loading</div>
+            <p class="ref-section-desc">Polaris ProgressBar, Spinner, and Skeleton loading patterns.</p>
+
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Progress Bars</div>
+            <div style="max-width: 400px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(97,97,97,1); margin-bottom: 4px;">
+                    <span>Highlight (6%)</span><span>3 of 50</span>
+                </div>
+                <div class="p-progress p-progress-highlight"><div class="p-progress-bar" style="width: 6%;"></div></div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(97,97,97,1); margin-bottom: 4px;">
+                    <span>Primary (45%)</span>
+                </div>
+                <div class="p-progress p-progress-primary"><div class="p-progress-bar" style="width: 45%;"></div></div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(97,97,97,1); margin-bottom: 4px;">
+                    <span>Success (100%)</span>
+                </div>
+                <div class="p-progress p-progress-success"><div class="p-progress-bar" style="width: 100%;"></div></div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: rgba(97,97,97,1); margin-bottom: 4px;">
+                    <span>Critical (96%)</span>
+                </div>
+                <div class="p-progress p-progress-critical"><div class="p-progress-bar" style="width: 96%;"></div></div>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Spinners</div>
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 16px;">
+                <div style="text-align: center;">
+                    <div class="p-spinner"></div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1); margin-top: 6px;">Large</div>
+                </div>
+                <div style="text-align: center;">
+                    <div class="p-spinner p-spinner-small"></div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1); margin-top: 6px;">Small</div>
+                </div>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Skeleton Loading</div>
+            <div style="max-width: 400px; padding: 16px; background: white; border-radius: 8px; box-shadow: 0px 4px 6px -2px rgba(26,26,26,0.20);">
+                <div class="p-skeleton-line" style="width: 40%; height: 14px; margin-bottom: 12px;"></div>
+                <div class="p-skeleton-line"></div>
+                <div class="p-skeleton-line"></div>
+                <div class="p-skeleton-line" style="width: 60%;"></div>
+            </div>
+
+            <hr class="ref-divider">
+            <div style="font-size: 12px; font-weight: 600; color: rgba(97,97,97,1); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Pagination</div>
+            <div class="p-pagination">
+                <button class="p-pagination-btn" disabled>
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.78 5.47a.75.75 0 0 1 0 1.06l-3.47 3.47 3.47 3.47a.75.75 0 1 1-1.06 1.06l-4-4a.75.75 0 0 1 0-1.06l4-4a.75.75 0 0 1 1.06 0Z"/></svg>
+                </button>
+                <span class="p-pagination-label">1 of 5</span>
+                <button class="p-pagination-btn">
+                    <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.22 5.47a.75.75 0 0 1 1.06 0l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06-1.06L11.69 10 8.22 6.53a.75.75 0 0 1 0-1.06Z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- SHADOWS REFERENCE -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="ref-section">
+            <div class="ref-section-title"><span class="section-number">+</span> Shadow Tokens</div>
+            <p class="ref-section-desc">Polaris shadow scale for elevation hierarchy.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
+                <div style="padding: 20px; border-radius: 8px; background: white; text-align: center; box-shadow: none; border: 1px dashed #e3e3e3;">
+                    <div style="font-size: 12px; font-weight: 600;">shadow-0</div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1);">none</div>
+                </div>
+                <div style="padding: 20px; border-radius: 8px; background: white; text-align: center; box-shadow: 0px 1px 0px 0px rgba(26,26,26,0.07);">
+                    <div style="font-size: 12px; font-weight: 600;">shadow-100</div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1);">Subtle</div>
+                </div>
+                <div style="padding: 20px; border-radius: 8px; background: white; text-align: center; box-shadow: 0px 3px 1px -1px rgba(26,26,26,0.07);">
+                    <div style="font-size: 12px; font-weight: 600;">shadow-200</div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1);">Low</div>
+                </div>
+                <div style="padding: 20px; border-radius: 8px; background: white; text-align: center; box-shadow: 0px 4px 6px -2px rgba(26,26,26,0.20);">
+                    <div style="font-size: 12px; font-weight: 600;">shadow-300</div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1);">Cards (default)</div>
+                </div>
+                <div style="padding: 20px; border-radius: 8px; background: white; text-align: center; box-shadow: 0px 8px 16px -4px rgba(26,26,26,0.22);">
+                    <div style="font-size: 12px; font-weight: 600;">shadow-400</div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1);">Popovers</div>
+                </div>
+                <div style="padding: 20px; border-radius: 8px; background: white; text-align: center; box-shadow: 0px 12px 20px -8px rgba(26,26,26,0.24);">
+                    <div style="font-size: 12px; font-weight: 600;">shadow-500</div>
+                    <div style="font-size: 11px; color: rgba(97,97,97,1);">Modals</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        </div><!-- .app-main -->
+    </div><!-- .app-layout -->
+</body>
+</html>

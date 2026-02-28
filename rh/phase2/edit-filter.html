@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>★★★ Edit Filter - ResourceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f1f1f1;
+            color: #202223;
+        }
+
+        /* ── Page Navigation Bar ── */
+        .page-nav {
+            background: #1a1a2e;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            position: sticky;
+            top: 0;
+            z-index: 9000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .page-nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.4);
+            margin-right: 20px;
+            padding: 12px 0;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+        .page-nav a {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .page-nav a:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav a.active {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown {
+            position: relative;
+        }
+        .page-nav-dropdown > button {
+            padding: 12px 18px;
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .page-nav-dropdown > button:hover {
+            color: white;
+            background: rgba(255,255,255,0.06);
+        }
+        .page-nav-dropdown.active > button {
+            color: white;
+            border-bottom-color: #6366f1;
+        }
+        .page-nav-dropdown-chevron {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        .page-nav-submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #16162a;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0 0 8px 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            overflow: hidden;
+            z-index: 9001;
+        }
+        .page-nav-dropdown:hover .page-nav-submenu,
+        .page-nav-submenu:hover {
+            display: block;
+        }
+        .page-nav-submenu a {
+            display: block;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            border-bottom: none;
+            transition: all 0.15s;
+        }
+        .page-nav-submenu a:hover {
+            background: rgba(255,255,255,0.08);
+            color: white;
+        }
+        .page-nav-submenu a.active {
+            color: white;
+            background: rgba(99, 102, 241, 0.15);
+            border-bottom: none;
+        }
+        .page-nav-submenu a.active::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #6366f1;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e1e3e5;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-arrow {
+            font-size: 20px;
+            color: #202223;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-arrow:hover {
+            color: #005bd3;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #c9cccf;
+            background: white;
+            font-weight: 500;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            background: #f6f6f7;
+        }
+
+        .btn-primary {
+            background: #303030;
+            color: white;
+            border-color: #303030;
+        }
+
+        .btn-primary:hover {
+            background: #1a1a1a;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #e51c00;
+            border-color: #e51c00;
+        }
+
+        .btn-danger:hover {
+            background: #fff0f0;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #202223;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #bf0711;
+        }
+
+        .text-input, .select-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #c9cccf;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #202223;
+        }
+
+        .text-input:focus, .select-input:focus {
+            outline: none;
+            border-color: #005bd3;
+            box-shadow: 0 0 0 1px #005bd3;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #6d7175;
+            margin-top: 6px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 12px;
+        }
+
+        /* ── Filter Values ── */
+        .values-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .values-count {
+            font-size: 12px;
+            color: #6d7175;
+            font-weight: 400;
+        }
+
+        .filter-values-list {
+            margin-bottom: 12px;
+            min-height: 40px;
+        }
+
+        .filter-value-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #f7f7f7;
+            border: 1px solid #e3e3e3;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            transition: border-color 0.15s;
+        }
+
+        .filter-value-item:hover {
+            border-color: #c9cccf;
+        }
+
+        .filter-value-item.dragging {
+            opacity: 0.5;
+        }
+
+        .filter-value-drag {
+            color: #b5b5b5;
+            cursor: grab;
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        .filter-value-drag:active {
+            cursor: grabbing;
+        }
+
+        .filter-value-drag svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .filter-value-text {
+            flex: 1;
+            font-size: 14px;
+            color: #303030;
+        }
+
+        .filter-value-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #b5b5b5;
+            padding: 2px;
+            border-radius: 4px;
+            display: flex;
+            flex-shrink: 0;
+        }
+
+        .filter-value-remove:hover {
+            color: #e51c00;
+            background: #fff0f0;
+        }
+
+        .filter-value-add-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-value-add-row .text-input {
+            flex: 1;
+        }
+
+        .filter-value-add-row .btn {
+            flex-shrink: 0;
+            padding: 10px 16px;
+        }
+
+        .filter-value-empty {
+            text-align: center;
+            padding: 24px 16px;
+            color: #b5b5b5;
+            font-size: 13px;
+            border: 1px dashed #e3e3e3;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        /* ── Delete section ── */
+        .delete-section {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e3e3e3;
+        }
+
+        .delete-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            margin-bottom: 8px;
+        }
+
+        .delete-section-text {
+            font-size: 12px;
+            color: #6d7175;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .btn-danger-text {
+            background: none;
+            border: none;
+            color: #e51c00;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .btn-danger-text:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Unsaved changes banner ── */
+        .unsaved-banner {
+            display: none;
+            background: #1a1a1a;
+            color: white;
+            padding: 12px 24px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9000;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .unsaved-banner.show {
+            display: flex;
+        }
+
+        .unsaved-banner-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .unsaved-banner-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .unsaved-banner .btn {
+            padding: 8px 16px;
+        }
+
+        .unsaved-banner .btn-discard {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .unsaved-banner .btn-discard:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .unsaved-banner .btn-save {
+            background: white;
+            color: #303030;
+            border-color: white;
+        }
+
+        .unsaved-banner .btn-save:hover {
+            background: #e3e3e3;
+        }
+
+        /* ── Shopify-style Left Sidebar ── */
+        .app-layout {
+            display: flex;
+            min-height: calc(100vh - 44px);
+        }
+
+        .app-sidebar {
+            width: 240px;
+            background: #f6f6f7;
+            border-right: 1px solid #e1e3e5;
+            padding: 12px 8px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            padding: 8px 12px 4px;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 7px 12px;
+            font-size: 13px;
+            color: #616161;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.15s;
+            font-weight: 500;
+        }
+
+        .sidebar-nav li a:hover {
+            background: #e8e8e8;
+            color: #202223;
+        }
+
+        .sidebar-nav li a.active {
+            background: #e8e8e8;
+            color: #202223;
+            font-weight: 600;
+        }
+
+        .app-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* ── Phase Toggle ── */
+        .phase-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 2px;
+        }
+        .phase-btn {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .phase-btn:hover {
+            color: rgba(255,255,255,0.8);
+        }
+        .phase-btn.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Navigation -->
+    <nav class="page-nav">
+        <span class="page-nav-label">UX Screens</span>
+        <a href="settings-visibility.html">Settings</a>
+        <div class="page-nav-dropdown">
+            <button>Categories List <span class="page-nav-dropdown-chevron">&#9662;</span></button>
+            <div class="page-nav-submenu">
+                <a href="categories-list.html">Phase 1</a>
+                <a href="categories-list-phase2.html">Phase 2</a>
+            </div>
+        </div>
+        <div class="page-nav-dropdown active">
+            <button>Edit Pages <span class="page-nav-dropdown-chevron">&#9662;</span></button>
+            <div class="page-nav-submenu">
+                <a href="access-rules-ux.html">Edit Category</a>
+                <a href="edit-filter.html" class="active">Edit Filter</a>
+            </div>
+        </div>
+        <a href="polaris-reference.html">Polaris Reference</a>
+        <div class="phase-toggle">
+            <a href="../phase1/edit-filter.html" class="phase-btn">Phase 1</a>
+            <a href="javascript:void(0)" class="phase-btn active">Phase 2</a>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <!-- Left Sidebar -->
+        <aside class="app-sidebar">
+            <div class="sidebar-section-title">ResourceHub</div>
+            <ul class="sidebar-nav">
+                <li><a href="#" class="active">Resources</a></li>
+                <li><a href="categories-list.html">Categories</a></li>
+                <li><a href="polaris-reference.html">Library</a></li>
+                <li><a href="#">Plans</a></li>
+                <li><a href="settings-visibility.html">Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="app-main">
+
+    <div class="page-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="categories-list-phase2.html?tab=filters" class="back-arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="#202223"><path d="M17 9H5.414l3.293-3.293a1 1 0 1 0-1.414-1.414l-5 5a1 1 0 0 0 0 1.414l5 5a1 1 0 0 0 1.414-1.414L5.414 11H17a1 1 0 1 0 0-2z"/></svg>
+                </a>
+                <h1 class="header-title" id="pageTitle">Add filter</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn" onclick="window.location.href='categories-list-phase2.html?tab=filters'">Discard</button>
+                <button class="btn btn-primary" onclick="saveFilter()">Save</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="layout">
+                <!-- Left Column -->
+                <div>
+                    <!-- Filter Information -->
+                    <div class="card">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Filter name <span class="required">*</span>
+                            </label>
+                            <input type="text" class="text-input" id="filterNameInput" placeholder="e.g., Technique, Column Type, Country" oninput="markDirty()" />
+                            <div class="help-text">This appears as the filter section title in your library sidebar</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="text-input" id="filterDescInput" placeholder="Optional — internal note for your team" oninput="markDirty()" />
+                            <div class="help-text">Only visible to you. Not shown on the storefront.</div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Values -->
+                    <div class="card">
+                        <div class="values-section-header">
+                            <h3 class="card-title" style="margin-bottom: 0;">Filter values</h3>
+                            <span class="values-count" id="valuesCount">0 values</span>
+                        </div>
+                        <div class="help-text" style="margin-top: 0; margin-bottom: 16px;">
+                            Add the options customers can filter by. Drag to reorder how they appear in the sidebar.
+                        </div>
+
+                        <div id="filterValuesList" class="filter-values-list"></div>
+
+                        <div class="filter-value-add-row">
+                            <input type="text" class="text-input" id="newValueInput" placeholder="Type a value and press Enter" onkeydown="if(event.key==='Enter'){event.preventDefault();addValue();}" />
+                            <button class="btn" onclick="addValue()">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div>
+                    <!-- Status -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">Status</div>
+                        <select class="select-input" id="filterStatusSelect" onchange="markDirty()">
+                            <option value="active">Active</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                        <div class="help-text" style="margin-top: 8px;">Draft filters won't appear on your storefront</div>
+                    </div>
+
+                    <!-- Display Order -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-title">Display Order</div>
+                        <input type="number" class="text-input" id="filterOrderInput" value="0" oninput="markDirty()" />
+                        <div class="help-text" style="margin-top: 8px;">Controls where this filter appears in the sidebar. Lower numbers appear first.</div>
+                    </div>
+
+                    <!-- Delete Filter (edit mode only) -->
+                    <div class="delete-section" id="deleteSection" style="display: none;">
+                        <div class="delete-section-title">Delete this filter</div>
+                        <div class="delete-section-text">Removing this filter will unassign it from all resources. This action cannot be undone.</div>
+                        <button class="btn-danger-text" onclick="deleteFilter()">Delete filter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unsaved Changes Banner -->
+    <div class="unsaved-banner" id="unsavedBanner">
+        <span class="unsaved-banner-text">Unsaved changes</span>
+        <div class="unsaved-banner-actions">
+            <button class="btn btn-discard" onclick="discardChanges()">Discard</button>
+            <button class="btn btn-save" onclick="saveFilter()">Save</button>
+        </div>
+    </div>
+
+        </div><!-- .app-main -->
+    </div><!-- .app-layout -->
+
+    <script>
+        // ── Sample data (mirrors categories-list-phase2.html) ──
+        const filtersData = [
+            { id: '1', name: 'Technique', description: 'Analytical technique used', values: ['HPLC', 'GC', 'LC-MS', 'IC', 'GPC'], resourceCount: 234, status: 'active', order: 0 },
+            { id: '2', name: 'Column Type', description: '', values: ['C18', 'C8', 'HILIC', 'Phenyl', 'CN', 'Amino'], resourceCount: 189, status: 'active', order: 10 },
+            { id: '3', name: 'Country', description: 'Country of origin', values: ['USA', 'Germany', 'Japan', 'UK', 'China'], resourceCount: 312, status: 'draft', order: 20 },
+        ];
+
+        // ── State ──
+        let currentFilterValues = [];
+        let editingFilterId = null;
+        let isDirty = false;
+        let draggedIdx = null;
+
+        // ── Init: detect create vs edit from URL params ──
+        function init() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+
+            if (id) {
+                const filter = filtersData.find(f => f.id === id);
+                if (filter) {
+                    editingFilterId = id;
+                    document.getElementById('pageTitle').textContent = `Edit filter`;
+                    document.title = `★★★ Edit Filter - ${filter.name} - ResourceHub`;
+                    document.getElementById('filterNameInput').value = filter.name;
+                    document.getElementById('filterDescInput').value = filter.description || '';
+                    document.getElementById('filterStatusSelect').value = filter.status;
+                    document.getElementById('filterOrderInput').value = filter.order || 0;
+                    currentFilterValues = [...filter.values];
+                    document.getElementById('deleteSection').style.display = 'block';
+                } else {
+                    // ID not found, treat as create
+                    document.getElementById('pageTitle').textContent = 'Add filter';
+                }
+            } else {
+                document.getElementById('pageTitle').textContent = 'Add filter';
+            }
+
+            renderValues();
+        }
+
+        // ── Render values list ──
+        function renderValues() {
+            const list = document.getElementById('filterValuesList');
+            const countEl = document.getElementById('valuesCount');
+            countEl.textContent = `${currentFilterValues.length} value${currentFilterValues.length !== 1 ? 's' : ''}`;
+
+            if (currentFilterValues.length === 0) {
+                list.innerHTML = '<div class="filter-value-empty">No values added yet. Add values below.</div>';
+                return;
+            }
+
+            list.innerHTML = currentFilterValues.map((val, i) => `
+                <div class="filter-value-item" draggable="true" data-index="${i}"
+                     ondragstart="onDragStart(event, ${i})"
+                     ondragover="onDragOver(event)"
+                     ondrop="onDrop(event, ${i})"
+                     ondragend="onDragEnd(event)">
+                    <span class="filter-value-drag" title="Drag to reorder">
+                        <svg viewBox="0 0 20 20"><circle cx="7" cy="4" r="1.5"/><circle cx="13" cy="4" r="1.5"/><circle cx="7" cy="10" r="1.5"/><circle cx="13" cy="10" r="1.5"/><circle cx="7" cy="16" r="1.5"/><circle cx="13" cy="16" r="1.5"/></svg>
+                    </span>
+                    <span class="filter-value-text">${val}</span>
+                    <button class="filter-value-remove" onclick="removeValue(${i})" title="Remove value">
+                        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22z"/></svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // ── Add value ──
+        function addValue() {
+            const input = document.getElementById('newValueInput');
+            const val = input.value.trim();
+            if (!val) return;
+            if (currentFilterValues.map(v => v.toLowerCase()).includes(val.toLowerCase())) {
+                alert('This value already exists.');
+                return;
+            }
+            currentFilterValues.push(val);
+            renderValues();
+            input.value = '';
+            input.focus();
+            markDirty();
+        }
+
+        // ── Remove value ──
+        function removeValue(i) {
+            currentFilterValues.splice(i, 1);
+            renderValues();
+            markDirty();
+        }
+
+        // ── Drag & drop reorder ──
+        function onDragStart(e, i) {
+            draggedIdx = i;
+            e.dataTransfer.effectAllowed = 'move';
+            e.target.classList.add('dragging');
+        }
+
+        function onDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function onDrop(e, targetIdx) {
+            e.preventDefault();
+            if (draggedIdx === null || draggedIdx === targetIdx) return;
+            const item = currentFilterValues.splice(draggedIdx, 1)[0];
+            currentFilterValues.splice(targetIdx, 0, item);
+            renderValues();
+            draggedIdx = null;
+            markDirty();
+        }
+
+        function onDragEnd(e) {
+            e.target.classList.remove('dragging');
+            draggedIdx = null;
+        }
+
+        // ── Save filter ──
+        function saveFilter() {
+            const name = document.getElementById('filterNameInput').value.trim();
+            if (!name) {
+                alert('Please enter a filter name.');
+                document.getElementById('filterNameInput').focus();
+                return;
+            }
+            if (currentFilterValues.length === 0) {
+                alert('Please add at least one filter value.');
+                document.getElementById('newValueInput').focus();
+                return;
+            }
+
+            // Check duplicate name
+            const duplicate = filtersData.find(f => f.name.toLowerCase() === name.toLowerCase() && f.id !== editingFilterId);
+            if (duplicate) {
+                alert('A filter with this name already exists.');
+                return;
+            }
+
+            // In production this would be an API call
+            if (editingFilterId) {
+                console.log('Saved filter:', editingFilterId, name, currentFilterValues);
+            } else {
+                console.log('Created filter:', name, currentFilterValues);
+            }
+
+            isDirty = false;
+            // Navigate back to filters tab
+            window.location.href = 'categories-list-phase2.html?tab=filters';
+        }
+
+        // ── Delete filter ──
+        function deleteFilter() {
+            if (!editingFilterId) return;
+            if (!confirm('Delete this filter? Resources using it will lose this filter assignment. This cannot be undone.')) return;
+            console.log('Deleted filter:', editingFilterId);
+            window.location.href = 'categories-list-phase2.html?tab=filters';
+        }
+
+        // ── Unsaved changes tracking ──
+        function markDirty() {
+            if (!isDirty) {
+                isDirty = true;
+                document.getElementById('unsavedBanner').classList.add('show');
+            }
+        }
+
+        function discardChanges() {
+            if (confirm('Discard all unsaved changes?')) {
+                window.location.href = 'categories-list-phase2.html?tab=filters';
+            }
+        }
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener('beforeunload', function(e) {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // ── Initialize ──
+        init();
+    </script>
+</body>
+</html>

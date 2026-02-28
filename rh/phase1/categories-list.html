@@ -457,6 +457,35 @@
             flex: 1;
             min-width: 0;
         }
+
+        /* ── Phase Toggle ── */
+        .phase-toggle {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 2px;
+        }
+        .phase-btn {
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .phase-btn:hover {
+            color: rgba(255,255,255,0.8);
+        }
+        .phase-btn.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -473,6 +502,10 @@
         </div>
         <a href="access-rules-ux.html">Edit Category</a>
         <a href="polaris-reference.html">Polaris Reference</a>
+        <div class="phase-toggle">
+            <a href="javascript:void(0)" class="phase-btn active">Phase 1</a>
+            <a href="../phase2/categories-list.html" class="phase-btn">Phase 2</a>
+        </div>
     </nav>
 
     <div class="app-layout">
