@@ -620,6 +620,61 @@
         .test-panel-note.expanded .test-panel-note-chevron {
             transform: rotate(90deg);
         }
+        /* ── Shopify-style Left Sidebar ── */
+        .app-layout {
+            display: flex;
+            min-height: calc(100vh - 44px);
+        }
+
+        .app-sidebar {
+            width: 240px;
+            background: #f6f6f7;
+            border-right: 1px solid #e1e3e5;
+            padding: 12px 8px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #202223;
+            padding: 8px 12px 4px;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: flex;
+            align-items: center;
+            padding: 7px 12px;
+            font-size: 13px;
+            color: #616161;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.15s;
+            font-weight: 500;
+        }
+
+        .sidebar-nav li a:hover {
+            background: #e8e8e8;
+            color: #202223;
+        }
+
+        .sidebar-nav li a.active {
+            background: #e8e8e8;
+            color: #202223;
+            font-weight: 600;
+        }
+
+        .app-main {
+            flex: 1;
+            min-width: 0;
+        }
     </style>
 </head>
 <body>
@@ -643,6 +698,22 @@
         </div>
         <a href="polaris-reference.html">Polaris Reference</a>
     </nav>
+
+    <div class="app-layout">
+        <!-- Left Sidebar -->
+        <aside class="app-sidebar">
+            <div class="sidebar-section-title">ResourceHub</div>
+            <ul class="sidebar-nav">
+                <li><a href="#">Resources</a></li>
+                <li><a href="categories-list.html" class="active">Categories</a></li>
+                <li><a href="polaris-reference.html">Library</a></li>
+                <li><a href="#">Plans</a></li>
+                <li><a href="settings-visibility.html">Settings</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="app-main">
 
     <div class="page-wrapper">
         <!-- Header -->
@@ -1056,6 +1127,9 @@
             </div>
         </div>
     </div>
+
+        </div><!-- .app-main -->
+    </div><!-- .app-layout -->
 
     <script>
         // Test panel toggle
