@@ -545,33 +545,71 @@
             min-width: 0;
         }
 
-        /* ── Phase Toggle ── */
-        .phase-toggle {
-            margin-left: auto;
+        /* ── Phase Dropdown ── */
+        .phase-selector {
+            padding: 0 8px 8px;
+            margin-bottom: 4px;
+        }
+        .phase-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        .phase-dropdown-btn {
             display: flex;
             align-items: center;
-            gap: 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            padding: 2px;
-        }
-        .phase-btn {
-            padding: 5px 14px;
-            font-size: 12px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.15s;
-            white-space: nowrap;
-        }
-        .phase-btn:hover {
-            color: rgba(255,255,255,0.8);
-        }
-        .phase-btn.active {
-            background: rgba(255,255,255,0.2);
-            color: white;
+            justify-content: space-between;
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 13px;
             font-weight: 600;
+            color: #202223;
+            background: #e8e8e8;
+            border: 1px solid #d4d4d4;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .phase-dropdown-btn:hover {
+            background: #e0e0e0;
+        }
+        .phase-dropdown-chevron {
+            font-size: 10px;
+            color: #6d7175;
+        }
+        .phase-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d4d4d4;
+            border-radius: 8px;
+            margin-top: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            z-index: 100;
+            overflow: hidden;
+        }
+        .phase-dropdown.open .phase-dropdown-menu {
+            display: block;
+        }
+        .phase-dropdown-menu a {
+            display: block;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #616161;
+            text-decoration: none;
+            transition: background 0.1s;
+        }
+        .phase-dropdown-menu a:hover {
+            background: #f6f6f7;
+            color: #202223;
+        }
+        .phase-dropdown-menu a.active {
+            font-weight: 600;
+            color: #202223;
+            background: #f0f0f0;
         }
     </style>
 </head>
@@ -595,15 +633,22 @@
             </div>
         </div>
         <a href="polaris-reference.html">Polaris Reference</a>
-        <div class="phase-toggle">
-            <a href="../phase1/edit-filter.html" class="phase-btn">Phase 1</a>
-            <a href="javascript:void(0)" class="phase-btn active">Phase 2</a>
-        </div>
     </nav>
 
     <div class="app-layout">
         <!-- Left Sidebar -->
         <aside class="app-sidebar">
+            <div class="phase-selector">
+                <div class="phase-dropdown" id="phaseDropdown">
+                    <button class="phase-dropdown-btn" onclick="document.getElementById('phaseDropdown').classList.toggle('open')">
+                        Phase 2 <span class="phase-dropdown-chevron">&#9662;</span>
+                    </button>
+                    <div class="phase-dropdown-menu">
+                        <a href="../phase1/edit-filter.html">Phase 1</a>
+                        <a href="javascript:void(0)" class="active">Phase 2</a>
+                    </div>
+                </div>
+            </div>
             <div class="sidebar-section-title">ResourceHub</div>
             <ul class="sidebar-nav">
                 <li><a href="#" class="active">Resources</a></li>
@@ -716,6 +761,11 @@
     </div><!-- .app-layout -->
 
     <script>
+        document.addEventListener('click', function(e) {
+            var dd = document.getElementById('phaseDropdown');
+            if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+        });
+
         // ── Sample data (mirrors categories-list-phase2.html) ──
         const filtersData = [
             { id: '1', name: 'Technique', description: 'Analytical technique used', values: ['HPLC', 'GC', 'LC-MS', 'IC', 'GPC'], resourceCount: 234, status: 'active', order: 0 },
